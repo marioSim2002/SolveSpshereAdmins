@@ -1,4 +1,4 @@
-package com.example.solvesphereadmins.Network;
+package com.example.solvesphereadmins.ServerUnit;
 
 import com.example.solvesphereadmins.ServerUnit.ClientHandler;
 
