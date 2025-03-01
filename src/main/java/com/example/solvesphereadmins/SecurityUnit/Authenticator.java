@@ -2,6 +2,7 @@ package com.example.solvesphereadmins.SecurityUnit;
 
 import DatabaseUnit.AdminDAO;
 import DatabaseUnit.AdminDAOImpl;
+import com.example.solvesphereadmins.AdminUnit.Admin;
 
 public class Authenticator {
     private final AdminDAO adminDAO;
@@ -12,7 +13,7 @@ public class Authenticator {
         this.passwordHasher = passwordHasher;
     }
 
-    public boolean authenticate(String username, String password) {
+    public Admin authenticate(String username, String password) {
         return adminDAO.authenticate(username, passwordHasher.hashPassword(password));
     }
 }

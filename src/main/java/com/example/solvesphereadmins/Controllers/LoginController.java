@@ -6,7 +6,9 @@ import com.example.solvesphereadmins.AdminUnit.Admin;
 import com.example.solvesphereadmins.AlertsUnit;
 import com.example.solvesphereadmins.SecurityUnit.Authenticator;
 import com.example.solvesphereadmins.SecurityUnit.PasswordHasher;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
@@ -15,6 +17,11 @@ public class LoginController {
     private TextField usernameField;
     @FXML
     private PasswordField passwordField;
+    @FXML
+    private TextField visiblePasswordField;
+    @FXML
+    private CheckBox showPasswordCheckbox;
+
 
     private final AdminDAO adminDAO = new AdminDAOImpl();
     private final Authenticator authenticator = new Authenticator(new PasswordHasher());
@@ -23,21 +30,11 @@ public class LoginController {
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
 
-        Admin admin = adminDAO.getAdminByUsername(username);
-
-        if (admin == null) {
-            AlertsUnit.showErrorAlert("User does not exist.");
-            return;
-        }
-
-        if (admin.getStatus().equals("SUSPENDED")) {
-            AlertsUnit.showErrorAlert("Account is suspended. Contact Support.");
-            return;
-        }
-
-        if (authenticator.authenticate(username, password)) {
+        if (authenticator.authenticate(username, password) != null) {
+            Admin admin = authenticator.authenticate(username, password);
             System.out.println("Login Successful!");
-            // Proceed to dashboard
+            System.out.println(admin.getUsername()); // success dg
+
             openDashboard(admin);
         } else {
             AlertsUnit.showErrorAlert("Invalid username or password.");
@@ -45,7 +42,18 @@ public class LoginController {
     }
 
     private void openDashboard(Admin admin) {
-        System.out.println("Opening dashboard for: " + admin.getUsername());
-        // Implement scene transition logic here
+    }
+
+    @FXML
+    public void togglePasswordVisibility() {
+        if (showPasswordCheckbox.isSelected()) {
+            visiblePasswordField.setText(passwordField.getText());
+            visiblePasswordField.setVisible(true);
+            passwordField.setVisible(false);
+        } else {
+            passwordField.setText(visiblePasswordField.getText());
+            passwordField.setVisible(true);
+            visiblePasswordField.setVisible(false);
+        }
     }
 }
