@@ -8,9 +8,15 @@ import com.example.solvesphereadmins.SecurityUnit.Authenticator;
 import com.example.solvesphereadmins.SecurityUnit.PasswordHasher;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class LoginController {
     @FXML
@@ -42,7 +48,25 @@ public class LoginController {
     }
 
     private void openDashboard(Admin admin) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/solvesphereadmins/MainDashboard.fxml"));
+            Parent root = loader.load();
+
+            MainDashboardController controller = loader.getController();
+            controller.init(admin);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Admin Dashboard");
+            stage.show();
+
+            // Close the login window (optional)
+            ((Stage) usernameField.getScene().getWindow()).close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
     @FXML
     public void togglePasswordVisibility() {

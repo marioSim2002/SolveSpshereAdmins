@@ -14,6 +14,6 @@ public class Authenticator {
     }
 
     public Admin authenticate(String username, String password) {
-        return adminDAO.authenticate(username, passwordHasher.hashPassword(password));
+        return adminDAO.authenticate(username,(password));
     }
 }
