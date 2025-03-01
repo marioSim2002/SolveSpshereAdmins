@@ -24,13 +24,12 @@ public class MainDashboardController {
         this.currentAdmin = currentAdmin;
         List<StackPane> cards = List.of(manageAdmins, manageUsers, managePosts, manageComments);
 
-        // Shadow effect
+        // shadow effect
         DropShadow shadowEffect = new DropShadow();
         shadowEffect.setColor(Color.web("#3498db")); // Blue shadow
         shadowEffect.setRadius(10);
         shadowEffect.setSpread(0.2);
 
-        // Apply hover effect to each card
         for (StackPane card : cards) {
             card.setOnMouseEntered(event -> applyHoverEffect(card, shadowEffect));
             card.setOnMouseExited(event -> removeHoverEffect(card));
