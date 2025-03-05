@@ -49,7 +49,7 @@ public class AdminDAOImpl implements AdminDAO {
                 return false; // Admin already exists
             }
 
-            String hashedPassword = passwordHasher.hashPassword(password); // Hash password before saving
+            String hashedPassword = passwordHasher.hashPassword(password); //hash password before saving
 
             String query = "INSERT INTO admin (username, password, email, status, role) VALUES (?, ?, ?, 'ACTIVE', ?)";
 

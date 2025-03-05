@@ -2,21 +2,22 @@ package com.example.solvesphereadmins.Controllers;
 
 import DatabaseUnit.AdminDAO;
 import DatabaseUnit.AdminDAOImpl;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import com.example.solvesphereadmins.AdminUnit.Admin;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ManageAdminsController {
     @FXML private TableView<Admin> adminTable;
@@ -26,7 +27,12 @@ public class ManageAdminsController {
     @FXML private TableColumn<Admin, String> statusColumn;
     @FXML private TableColumn<Admin, String> roleColumn;
 
+    @FXML private Label superAdminCount;
+    @FXML private Label adminCount;
+    @FXML private ComboBox<String> filterRoleComboBox;
+
     private final AdminDAO adminDAO = new AdminDAOImpl();
+    private ObservableList<Admin> allAdmins = FXCollections.observableArrayList(); //all admins
 
     @FXML
     public void initialize() {
@@ -35,14 +41,27 @@ public class ManageAdminsController {
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         roleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
-
+        adminTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         loadAdminData();
+        filterRoleComboBox.setValue("All"); //default to "All"
+
     }
 
     private void loadAdminData() {
-        adminTable.getItems().setAll(adminDAO.getAllAdmins());
+        List<Admin> admins = adminDAO.getAllAdmins();
+        allAdmins.setAll(admins);
+        adminTable.setItems(allAdmins);
+
+        updateAdminCounts();
     }
 
+    private void updateAdminCounts() {
+        long superAdminTotal = allAdmins.stream().filter(a -> "SUPER_ADMIN".equals(a.getRole())).count();
+        long adminTotal = allAdmins.stream().filter(a -> "ADMIN".equals(a.getRole())).count();
+
+        superAdminCount.setText(String.valueOf(superAdminTotal));
+        adminCount.setText(String.valueOf(adminTotal));
+    }
     @FXML
     private void handleAddAdmin() {
         try {
@@ -52,13 +71,25 @@ public class ManageAdminsController {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Add Admin");
-            stage.setWidth(300);
+            stage.setWidth(350);
             stage.setHeight(450);
             stage.setResizable(false);
             stage.showAndWait();
             loadAdminData();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    @FXML
+    private void handleFilter() {
+        String selectedRole = filterRoleComboBox.getValue();
+        if ("All".equals(selectedRole)) {
+            adminTable.setItems(allAdmins); //show all
+        } else {  /// filter according to selected keyword - lambda
+            ObservableList<Admin> filteredList = FXCollections.observableArrayList(
+                    allAdmins.stream().filter(a -> a.getRole().equals(selectedRole)).collect(Collectors.toList())
+            );
+            adminTable.setItems(filteredList);
         }
     }
 

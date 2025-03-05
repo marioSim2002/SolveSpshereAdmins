@@ -1,15 +1,41 @@
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ComboBox?>
 
-<?import javafx.scene.layout.HBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.solvesphereadmins.Controllers.ManageAdminsController">
 
     <Label text="Manage Admins" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
 
+    <!-- Admin Count Section -->
+    <HBox spacing="20">
+        <Label text="Total Super Admins: " />
+        <Label fx:id="superAdminCount" text="0" style="-fx-font-weight: bold;"/>
+        <Label text=" | Total Admins: " />
+        <Label fx:id="adminCount" text="0" style="-fx-font-weight: bold;"/>
+    </HBox>
+
+    <!-- Filter Section -->
+    <HBox spacing="10">
+        <Label text="Filter by Role:" />
+        <ComboBox fx:id="filterRoleComboBox" onAction="#handleFilter">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="All"/>
+                    <String fx:value="SUPER_ADMIN"/>
+                    <String fx:value="ADMIN"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
+    </HBox>
+
+    <!-- Admin Table -->
     <TableView fx:id="adminTable">
         <columns>
             <TableColumn text="ID" fx:id="idColumn"/>
