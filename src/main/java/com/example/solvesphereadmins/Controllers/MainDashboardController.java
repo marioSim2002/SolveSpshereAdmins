@@ -1,27 +1,31 @@
 package com.example.solvesphereadmins.Controllers;
 
 import com.example.solvesphereadmins.AdminUnit.Admin;
+import com.example.solvesphereadmins.AlertsUnit;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.List;
 
 public class MainDashboardController {
-    Admin currentAdmin;
+    private Admin currentAdmin;
 
     @FXML private StackPane manageAdmins;
     @FXML private StackPane manageUsers;
     @FXML private StackPane managePosts;
     @FXML private StackPane manageComments;
 
-
-
-    public void init(Admin currentAdmin){
-        this.currentAdmin = currentAdmin;
+        public void init(Admin passedAdmin){
+        this.currentAdmin = passedAdmin;
         List<StackPane> cards = List.of(manageAdmins, manageUsers, managePosts, manageComments);
 
         // shadow effect
@@ -48,7 +52,26 @@ public class MainDashboardController {
         card.setScaleY(1.0);
     }
 
-    public void handleManageAdmins() {
+    @FXML
+    private void handleManageAdmins() {
+        if (currentAdmin != null && "SUPER_ADMIN".equals(currentAdmin.getRole())) {
+            openManageAdminsPage();
+        } else {
+            AlertsUnit.showAccessDeniedAlert();
+        }
+    }
+    private void openManageAdminsPage() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/solvesphereadmins/ManageAdmins.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Manage Admins");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void handleManageUsers() {

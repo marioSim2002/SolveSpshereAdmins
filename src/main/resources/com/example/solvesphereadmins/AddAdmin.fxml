@@ -1,0 +1,30 @@
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Button?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.solvesphereadmins.Controllers.AddAdminController">
+
+    <Label text="Add New Admin" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+    <TextField fx:id="usernameField" promptText="Username"/>
+    <PasswordField fx:id="passwordField" promptText="Password"/>
+    <TextField fx:id="emailField" promptText="Email"/>
+
+    <ComboBox fx:id="roleComboBox" promptText="Role">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="SUPER_ADMIN"/>
+                <String fx:value="ADMIN"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
+
+    <Button text="Add Admin" onAction="#handleAddAdmin"/>
+</VBox>

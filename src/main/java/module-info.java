@@ -17,6 +17,7 @@ module com.example.solvesphereadmins {
     exports com.example.solvesphereadmins;
     exports com.example.solvesphereadmins.Controllers;
     opens com.example.solvesphereadmins.Controllers to javafx.fxml;
+    opens com.example.solvesphereadmins.AdminUnit to javafx.base; // FIX
     exports com.example.solvesphereadmins.SecurityUnit;
     opens com.example.solvesphereadmins.SecurityUnit to javafx.fxml;
 }

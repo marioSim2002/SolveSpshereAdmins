@@ -36,11 +36,11 @@ public class LoginController {
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
 
-        if (authenticator.authenticate(username, password) != null) {
-            Admin admin = authenticator.authenticate(username, password);
-            System.out.println("Login Successful!");
-            System.out.println(admin.getUsername()); // success dg
+        Admin admin = authenticator.authenticate(username, password);
 
+        if (admin != null) {
+            System.out.println("Login Successful!");
+            System.out.println("Logged in as: " + admin.getUsername());
             openDashboard(admin);
         } else {
             AlertsUnit.showErrorAlert("Invalid username or password.");

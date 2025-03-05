@@ -14,6 +14,12 @@ public class Authenticator {
     }
 
     public Admin authenticate(String username, String password) {
-        return adminDAO.authenticate(username,(password));
+        Admin admin = adminDAO.getAdminByUsername(username); //fetch the admin's stored details
+
+        if (admin != null && passwordHasher.verifyPassword(password, admin.getPassword())) {
+            return admin; //password matches, return authenticated admin
+        }
+
+        return null; //authentication failed /no match
     }
 }

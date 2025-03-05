@@ -1,0 +1,27 @@
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+
+<?import javafx.scene.layout.HBox?>
+<VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.solvesphereadmins.Controllers.ManageAdminsController">
+
+    <Label text="Manage Admins" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+    <TableView fx:id="adminTable">
+        <columns>
+            <TableColumn text="ID" fx:id="idColumn"/>
+            <TableColumn text="Username" fx:id="usernameColumn"/>
+            <TableColumn text="Email" fx:id="emailColumn"/>
+            <TableColumn text="Status" fx:id="statusColumn"/>
+            <TableColumn text="Role" fx:id="roleColumn"/>
+        </columns>
+    </TableView>
+
+    <HBox spacing="10">
+        <Button text="Add Admin" onAction="#handleAddAdmin"/>
+        <Button text="Suspend Admin" onAction="#handleSuspendAdmin"/>
+    </HBox>
+</VBox>
