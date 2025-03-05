@@ -90,6 +90,16 @@ public class MainDashboardController {
     }
 
     public void handleManagePosts() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/solvesphereadmins/ManagePosts.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Manage Users");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void handleManageComments() {

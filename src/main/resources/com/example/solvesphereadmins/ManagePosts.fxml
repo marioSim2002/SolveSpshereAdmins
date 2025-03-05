@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.PieChart?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/19"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.solvesphereadmins.Controllers.ManageProblemsController"
+            prefHeight="500.0" prefWidth="700.0">
+
+    <VBox spacing="10" alignment="CENTER" style="-fx-padding: 15px;" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+
+        <!-- Title -->
+        <Label text="Manage Posts" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+        <!-- Search Bar -->
+        <TextField fx:id="searchField" promptText="Search by title or category..." onKeyReleased="#handleSearch" maxWidth="600"/>
+
+        <!-- List of Posts (Responsive) -->
+        <ListView fx:id="postsListView" prefHeight="300" prefWidth="680" VBox.vgrow="ALWAYS"/>
+
+        <!-- Chart Section -->
+        <VBox spacing="10" alignment="CENTER" VBox.vgrow="ALWAYS">
+            <Label text="Post Categories Distribution" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+            <PieChart fx:id="categoryChart" prefHeight="250" VBox.vgrow="ALWAYS"/>
+        </VBox>
+    </VBox>
+</AnchorPane>

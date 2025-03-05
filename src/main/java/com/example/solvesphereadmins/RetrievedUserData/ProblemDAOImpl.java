@@ -1,7 +1,5 @@
 package com.example.solvesphereadmins.RetrievedUserData;
 
-import com.example.solvesphereadmins.RetrievedUserData.Problem;
-import com.example.solvesphereadmins.RetrievedUserData.ProblemDAO;
 import com.example.solvesphereadmins.SolveShereDBConnection;
 
 import java.sql.*;
@@ -40,6 +38,7 @@ public class ProblemDAOImpl implements ProblemDAO {
         }
         return problems;
     }
+
     @Override
     public void deleteProblem(long problemId) {
         String query = "DELETE FROM problems WHERE id = ?";
@@ -74,5 +73,31 @@ public class ProblemDAOImpl implements ProblemDAO {
             e.printStackTrace();
         }
         return categoryCount;
+    }
+
+    @Override
+    public List<Problem> getAllProblems() {
+        List<Problem> problems = new ArrayList<>();
+        String query = "SELECT id, user_id, title, description, category, created_at, is_age_restricted FROM problems";
+
+        try (Connection conn = SolveShereDBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            var rs = stmt.executeQuery();
+            while (rs.next()) {
+                problems.add(new Problem(
+                        rs.getLong("id"),
+                        rs.getLong("user_id"),
+                        rs.getString("title"),
+                        rs.getString("description"),
+                        rs.getString("category"),
+                        rs.getTimestamp("created_at"),
+                        rs.getBoolean("is_age_restricted")
+                ));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return problems;
     }
 }
