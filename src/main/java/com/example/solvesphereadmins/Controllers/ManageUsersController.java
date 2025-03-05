@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 public class ManageUsersController {
 
-    @FXML private ComboBox<String> filterRoleComboBox; // ✅ Fix: Add String parameter
+    @FXML private ComboBox<String> filterRoleComboBox;
     @FXML private ListView<HBox> userListView;
     @FXML private TextField searchField;
 
@@ -35,11 +35,10 @@ public class ManageUsersController {
     public void initialize() {
         loadUserData();
 
-        // ✅ Fix: Properly set ComboBox values
         filterRoleComboBox.setItems(FXCollections.observableArrayList("All", "USER", "ACTIVE", "BANNED"));
         filterRoleComboBox.setValue("All");
 
-        // Detect click events on list items
+        //detect click events on list items
         userListView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) { // Double click to open user details
                 int selectedIndex = userListView.getSelectionModel().getSelectedIndex();
@@ -80,8 +79,8 @@ public class ManageUsersController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/solvesphereadmins/UserDetails.fxml"));
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setHeight(600);
             stage.setTitle("User Details");
-
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
 

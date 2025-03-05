@@ -1,21 +1,71 @@
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.ScrollPane?>
 
-<VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.solvesphereadmins.Controllers.UserDetailsController">
+<ScrollPane fitToWidth="true"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.solvesphereadmins.Controllers.UserDetailsController">
 
-    <Label text="User Details" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+    <!-- Changed alignment to TOP_CENTER so content stacks from top and removed fitToHeight -->
+    <VBox spacing="15" alignment="TOP_CENTER" style="-fx-padding: 15px; -fx-background-color: #f9f9f9;">
 
-    <ImageView fx:id="profileImage" fitWidth="100" fitHeight="100"/>
+        <Label text="User Details" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
 
-    <Label fx:id="usernameLabel" style="-fx-font-size: 16px;"/>
-    <Label fx:id="emailLabel" style="-fx-font-size: 14px;"/>
-    <Label fx:id="statusLabel" style="-fx-font-size: 14px;"/>
-    <Label fx:id="countryLabel" style="-fx-font-size: 14px;"/>
-    <Label fx:id="dobLabel" style="-fx-font-size: 14px;"/>
+        <ImageView fx:id="profileImage" fitWidth="100" fitHeight="100"/>
 
-    <Button text="Close" onAction="#handleClose"/>
-</VBox>
+        <Label fx:id="usernameLabel" style="-fx-font-size: 16px;"/>
+        <Label fx:id="emailLabel" style="-fx-font-size: 14px;"/>
+        <Label fx:id="statusLabel" style="-fx-font-size: 14px;"/>
+        <Label fx:id="countryLabel" style="-fx-font-size: 14px;"/>
+        <Label fx:id="dobLabel" style="-fx-font-size: 14px;"/>
+
+        <!-- Section: Comments -->
+        <Label text="User Comments" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+        <TableView fx:id="commentsTable" prefHeight="150">
+            <columns>
+                <TableColumn text="Comment ID" fx:id="commentIdColumn" prefWidth="100"/>
+                <TableColumn text="Content" fx:id="commentContentColumn" prefWidth="300"/>
+                <TableColumn text="Created At" fx:id="commentCreatedAtColumn" prefWidth="150"/>
+            </columns>
+        </TableView>
+
+        <!-- Buttons Section: Comments -->
+        <VBox spacing="10" alignment="CENTER">
+            <Button text="Delete Selected Comment" onAction="#handleDeleteComment" style="-fx-padding: 8px 16px;"/>
+        </VBox>
+
+        <!-- Section: Problems -->
+        <Label text="User Problems" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+        <TableView fx:id="problemsTable" prefHeight="150">
+            <columns>
+                <TableColumn text="Problem ID" fx:id="problemIdColumn" prefWidth="100"/>
+                <TableColumn text="Title" fx:id="problemTitleColumn" prefWidth="200"/>
+                <TableColumn text="Category" fx:id="problemCategoryColumn" prefWidth="150"/>
+                <TableColumn text="Created At" fx:id="problemCreatedAtColumn" prefWidth="150"/>
+            </columns>
+        </TableView>
+
+        <!-- Buttons Section: Problems -->
+        <VBox spacing="10" alignment="CENTER">
+            <Button text="Delete Selected Problem" onAction="#handleDeleteProblem" style="-fx-padding: 8px 16px;"/>
+        </VBox>
+
+        <!-- Chart Section: Categories Posted -->
+        <Label text="User Problem Categories" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+        <PieChart fx:id="categoryChart" prefHeight="300"/>
+
+        <!-- Close Button -->
+        <VBox spacing="15" alignment="CENTER">
+            <Button text="Close" onAction="#handleClose" style="-fx-padding: 10px 20px;"/>
+        </VBox>
+
+    </VBox>
+
+</ScrollPane>
