@@ -1,0 +1,24 @@
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox spacing="15" style="-fx-padding: 10px; -fx-border-color: #ddd; -fx-border-radius: 5px;"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.solvesphereadmins.Controllers.UserItemController">
+
+    <ImageView fx:id="profileImage" fitWidth="50" fitHeight="50"/>
+
+    <VBox spacing="5">
+        <Label fx:id="usernameLabel" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+        <Label fx:id="emailLabel" style="-fx-font-size: 12px;"/>
+        <Label fx:id="statusLabel" style="-fx-font-size: 12px; -fx-text-fill: gray;"/>
+    </VBox>
+
+    <HBox spacing="10">
+        <Button text="Ban" fx:id="banButton" onAction="#handleBanUser"/>
+        <Button text="Activate" fx:id="activateButton" onAction="#handleActivateUser"/>
+    </HBox>
+</HBox>

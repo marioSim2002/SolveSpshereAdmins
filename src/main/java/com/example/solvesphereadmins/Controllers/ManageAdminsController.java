@@ -32,7 +32,7 @@ public class ManageAdminsController {
     @FXML private ComboBox<String> filterRoleComboBox;
 
     private final AdminDAO adminDAO = new AdminDAOImpl();
-    private ObservableList<Admin> allAdmins = FXCollections.observableArrayList(); //all admins
+    private final ObservableList<Admin> allAdmins = FXCollections.observableArrayList(); //all admins
 
     @FXML
     public void initialize() {
