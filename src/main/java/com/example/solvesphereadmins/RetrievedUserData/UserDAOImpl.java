@@ -2,6 +2,7 @@ package com.example.solvesphereadmins.RetrievedUserData;
 
 import com.example.solvesphereadmins.SolveShereDBConnection;
 import com.example.solvesphereadmins.RetrievedUserData.User.UserStatus;
+import sqlQueries.UserQueries;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -42,6 +43,26 @@ public class UserDAOImpl implements UserDAO {
         return users;
     }
 
+    @Override
+    public Long getUserIdByUsernameAndEmail(String username, String email) {
+        Long userId = null;
+        try (Connection conn = SolveShereDBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(UserQueries.SELECT_USER_ID_BY_USERNAME_AND_EMAIL)) {
+
+            stmt.setString(1, username);
+            stmt.setString(2, email);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    userId = rs.getLong("id");
+                }
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println("Error fetching user ID: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return userId;
+    }
 
     @Override
     public List<User> getAllUsers() {
