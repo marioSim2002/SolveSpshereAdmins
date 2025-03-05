@@ -10,4 +10,5 @@ public interface UserDAO {
     List<User> getAllUsers();
 
     void updateUserStatus(long userId, User.UserStatus status);
+    void deleteUser(long userId);
 }

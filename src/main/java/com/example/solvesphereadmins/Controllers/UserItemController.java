@@ -18,15 +18,19 @@ public class UserItemController {
     @FXML private Label statusLabel;
     @FXML private Button banButton;
     @FXML private Button activateButton;
+    @FXML private Button deleteUserButton;
+    private ManageUsersController parentController; // parent controller
 
     private final UserDAO userDAO = new UserDAOImpl();
     private User user;
 
-    public void setUser(User user) {
+    public void setUser(User user,ManageUsersController parentController) {
         this.user = user;
         usernameLabel.setText(user.getUsername());
         emailLabel.setText(user.getEmail());
         statusLabel.setText(user.getStatus().toString());
+        this.parentController = parentController;
+
 
         if (user.getProfilePicture() != null) {
             profileImage.setImage(new Image(new ByteArrayInputStream(user.getProfilePicture())));
@@ -39,7 +43,13 @@ public class UserItemController {
             activateButton.setDisable(true);
         }
     }
-
+        @FXML
+        private void handleDeleteUser () {
+            if (user != null) {
+                userDAO.deleteUser(user.getId());
+                parentController.refreshUserList(); // refresh the UI
+            }
+        }
     @FXML
     private void handleBanUser() {
         userDAO.updateUserStatus(user.getId(), UserStatus.BANNED);

@@ -20,5 +20,7 @@
     <HBox spacing="10">
         <Button text="Ban" fx:id="banButton" onAction="#handleBanUser"/>
         <Button text="Activate" fx:id="activateButton" onAction="#handleActivateUser"/>
+        <Button text="Delete" fx:id="deleteUserButton" onAction="#handleDeleteUser" style="-fx-text-fill: red;"/>
+
     </HBox>
 </HBox>

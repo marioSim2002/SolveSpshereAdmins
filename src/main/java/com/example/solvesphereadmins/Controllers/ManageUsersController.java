@@ -63,7 +63,7 @@ public class ManageUsersController {
                 HBox userItem = loader.load();
 
                 UserItemController controller = loader.getController();
-                controller.setUser(user);
+                controller.setUser(user,this);
 
                 userItems.add(userItem);
             } catch (IOException e) {
@@ -114,4 +114,9 @@ public class ManageUsersController {
             updateUserList(filteredUsers);
         }
     }
+    public void refreshUserList() {
+        List<User> users = userDAO.getAllUsers();
+        updateUserList(users);
+    }
+
 }

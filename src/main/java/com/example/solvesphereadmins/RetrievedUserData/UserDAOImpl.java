@@ -78,7 +78,7 @@ public class UserDAOImpl implements UserDAO {
                 String statusString = rs.getString("ACTIVE");
                 UserStatus status;
 
-                // Convert string to enum
+                //convert string to enum
                 switch (statusString.toUpperCase()) {
                     case "ACTIVE":
                         status = UserStatus.ACTIVE;
@@ -112,18 +112,38 @@ public class UserDAOImpl implements UserDAO {
     }
     @Override
     public void updateUserStatus(long userId, UserStatus status) {
-        String query = "UPDATE solvesphere_users SET ACTIVE = ? WHERE id = ?";
+        String query = "UPDATE users SET ACTIVE = ? WHERE id = ?";
 
         try (Connection conn = SolveShereDBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            stmt.setString(1, status.toString()); // Fix: Store status as String
+            stmt.setString(1, status.toString()); //store status as String
             stmt.setLong(2, userId);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void deleteUser(long userId) {
+        String query = "DELETE FROM users WHERE id = ?";
+
+        try (Connection conn = SolveShereDBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setLong(1, userId);
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                System.out.println("User with ID " + userId + " was successfully deleted.");
+            } else {
+                System.out.println("User deletion failed. User not found.");
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 }
