@@ -18,7 +18,7 @@ public class AdminActionLogger {
      * Shows a popup window to get the admin's description of the action.
      * If the admin provides a description, it logs the action.
      */
-    public static void showPopUpWind(int adminId, String actionType, Long targetId, String targetType) {
+    public static boolean showPopUpWind(int adminId, String actionType, Long targetId, String targetType) {
         // Create the popup dialog
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Admin Action Description");
@@ -39,8 +39,11 @@ public class AdminActionLogger {
         if (result.isPresent() && result.get() == ButtonType.OK) {
             String description = descriptionField.getText().trim();
             logAdminAction(adminId, actionType, targetId, targetType, description);
+            return true; //wants to proceed
         }
+        return false;  //cancer action
     }
+
 
     /**
      * Logs the admin action in the database.

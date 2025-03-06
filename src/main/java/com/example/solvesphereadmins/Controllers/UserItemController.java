@@ -64,19 +64,21 @@ public class UserItemController {
     @FXML
     private void handleDeleteUser() {
         if (user != null) {
-            AdminActionLogger.showPopUpWind(currentAdmin.getId(), "DELETE_USER", user.getId(), "USER");
-            userDAO.deleteUser(user.getId());
-            parentController.refreshUserList(); // refresh the UI
+            if(AdminActionLogger.showPopUpWind(currentAdmin.getId(), "DELETE_USER", user.getId(), "USER")) {
+                userDAO.deleteUser(user.getId());
+                parentController.refreshUserList(); // refresh the UI
+            }
         }
     }
 
     @FXML
     private void handleBanUser() {
-        AdminActionLogger.showPopUpWind(currentAdmin.getId(), "BAN_USER", user.getId(), "USER");
-        userDAO.updateUserStatus(user.getId(), UserStatus.BANNED);
-        statusLabel.setText("BANNED");
-        banButton.setDisable(true);
-        activateButton.setDisable(false);
+       if(AdminActionLogger.showPopUpWind(currentAdmin.getId(), "BAN_USER", user.getId(), "USER")) {
+           userDAO.updateUserStatus(user.getId(), UserStatus.BANNED);
+           statusLabel.setText("BANNED");
+           banButton.setDisable(true);
+           activateButton.setDisable(false);
+       }
     }
 
     @FXML
