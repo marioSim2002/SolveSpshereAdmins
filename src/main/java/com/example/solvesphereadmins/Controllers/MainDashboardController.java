@@ -80,6 +80,15 @@ public class MainDashboardController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/solvesphereadmins/ManageUsers.fxml"));
             Parent root = loader.load();
+            ManageUsersController controller = loader.getController();
+            if (currentAdmin != null) {
+                controller.setAdmin(currentAdmin);
+                controller.initialize();
+            } else {
+                System.err.println("⚠️ Error: currentAdmin is NULL in handleManageUsers()");
+            }
+
+            // Create and configure the stage
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Manage Users");
@@ -88,6 +97,9 @@ public class MainDashboardController {
             e.printStackTrace();
         }
     }
+
+
+
 
     public void handleManagePosts() {
         try {

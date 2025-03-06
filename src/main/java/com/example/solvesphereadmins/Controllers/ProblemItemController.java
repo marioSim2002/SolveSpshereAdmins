@@ -1,5 +1,7 @@
 package com.example.solvesphereadmins.Controllers;
 
+import com.example.solvesphereadmins.AdminUnit.Admin;
+import com.example.solvesphereadmins.AdminUnit.AdminActionLogger;
 import com.example.solvesphereadmins.Reports.ReportDAO;
 import com.example.solvesphereadmins.RetrievedUserData.Problem;
 import com.example.solvesphereadmins.RetrievedUserData.ProblemDAO;
@@ -28,6 +30,8 @@ public class ProblemItemController {
     private ManageProblemsController parentController;
     private final ProblemDAO problemDAO = new ProblemDAOImpl();
     private final ReportDAO reportDAO = new ReportDAOImpl();
+    public void init(){
+    }
     public void setProblem(Problem problem, ManageProblemsController parentController) {
         this.problem = problem;
         this.parentController = parentController;
@@ -45,6 +49,8 @@ public class ProblemItemController {
     @FXML
     private void handleDeleteProblem() {
         if (problem != null) {
+            //AdminActionLogger.showPopUpWind(currentAdminId, "DELETE_PROBLEM",problem.getId(), "PROBLEM");
+
             problemDAO.deleteProblem(problem.getId());
             showAlert("Problem Deleted", "The post has been removed.");
             parentController.refreshPostList();

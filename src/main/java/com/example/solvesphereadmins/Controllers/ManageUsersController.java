@@ -1,5 +1,6 @@
 package com.example.solvesphereadmins.Controllers;
 
+import com.example.solvesphereadmins.AdminUnit.Admin;
 import com.example.solvesphereadmins.RetrievedUserData.User;
 import com.example.solvesphereadmins.RetrievedUserData.User.UserStatus;
 import com.example.solvesphereadmins.RetrievedUserData.UserDAO;
@@ -30,17 +31,17 @@ public class ManageUsersController {
 
     private final UserDAO userDAO = new UserDAOImpl();
     private ObservableList<User> allUsers = FXCollections.observableArrayList();
+    private Admin currentAdmin;
 
     @FXML
     public void initialize() {
         loadUserData();
-
         filterRoleComboBox.setItems(FXCollections.observableArrayList("All", "USER", "ACTIVE", "BANNED"));
         filterRoleComboBox.setValue("All");
 
         //detect click events on list items
         userListView.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) { // Double click to open user details
+            if (event.getClickCount() == 2) {
                 int selectedIndex = userListView.getSelectionModel().getSelectedIndex();
                 if (selectedIndex >= 0) {
                     openUserDetails(allUsers.get(selectedIndex)); //pass the clicked user
@@ -48,6 +49,9 @@ public class ManageUsersController {
             }
         });
     }
+
+    public void setAdmin(Admin admin) {this.currentAdmin = admin;}
+
 
     private void loadUserData() {
         List<User> users = userDAO.getAllUsers();
@@ -63,7 +67,7 @@ public class ManageUsersController {
                 HBox userItem = loader.load();
 
                 UserItemController controller = loader.getController();
-                controller.setUser(user,this);
+                controller.setUser(user,this,currentAdmin);
 
                 userItems.add(userItem);
             } catch (IOException e) {
@@ -86,6 +90,7 @@ public class ManageUsersController {
 
             UserDetailsController controller = loader.getController();
             controller.setUser(user);
+            controller.setAdmin(currentAdmin);
 
             stage.show();
         } catch (IOException e) {
@@ -103,7 +108,7 @@ public class ManageUsersController {
     }
 
     @FXML
-    public void handleFilter(ActionEvent actionEvent) {
+    public void handleFilter() {
         String selectedRole = filterRoleComboBox.getValue();
         if ("All".equals(selectedRole)) {
             updateUserList(allUsers);

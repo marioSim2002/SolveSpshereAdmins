@@ -1,5 +1,6 @@
 package com.example.solvesphereadmins.Controllers;
 
+import com.example.solvesphereadmins.AdminUnit.Admin;
 import com.example.solvesphereadmins.AdminUnit.Comment;
 import com.example.solvesphereadmins.RetrievedUserData.*;
 import javafx.animation.KeyFrame;
@@ -45,6 +46,7 @@ public class UserDetailsController {
     private final ProblemDAO problemDAO = new ProblemDAOImpl();
     private User user;
     private Timeline refreshTimeline; // Timer to auto-refresh data
+    private Admin admin;
 
     private void startAutoRefresh() {
         refreshTimeline = new Timeline(new KeyFrame(Duration.seconds(10), event -> refreshUserData()));
@@ -151,4 +153,6 @@ public class UserDetailsController {
         Stage stage = (Stage) usernameLabel.getScene().getWindow();
         stage.close();
     }
+
+    public void setAdmin(Admin currentAdmin) {this.admin = currentAdmin;}
 }

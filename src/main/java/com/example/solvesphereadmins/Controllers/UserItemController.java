@@ -1,5 +1,7 @@
 package com.example.solvesphereadmins.Controllers;
 
+import com.example.solvesphereadmins.AdminUnit.Admin;
+import com.example.solvesphereadmins.AdminUnit.AdminActionLogger;
 import com.example.solvesphereadmins.RetrievedUserData.User;
 import com.example.solvesphereadmins.RetrievedUserData.User.UserStatus;
 import com.example.solvesphereadmins.RetrievedUserData.UserDAO;
@@ -12,29 +14,44 @@ import javafx.scene.image.ImageView;
 import java.io.ByteArrayInputStream;
 
 public class UserItemController {
-    @FXML private ImageView profileImage;
-    @FXML private Label usernameLabel;
-    @FXML private Label emailLabel;
-    @FXML private Label statusLabel;
-    @FXML private Button banButton;
-    @FXML private Button activateButton;
-    @FXML private Button deleteUserButton;
+    @FXML
+    private ImageView profileImage;
+    @FXML
+    private Label usernameLabel;
+    @FXML
+    private Label emailLabel;
+    @FXML
+    private Label statusLabel;
+    @FXML
+    private Button banButton;
+    @FXML
+    private Button activateButton;
+    @FXML
+    private Button deleteUserButton;
     private ManageUsersController parentController; // parent controller
 
     private final UserDAO userDAO = new UserDAOImpl();
     private User user;
+    private Admin currentAdmin;
 
-    public void setUser(User user,ManageUsersController parentController) {
+    public void setUser(User user, ManageUsersController parentController, Admin admin) {
         this.user = user;
+        this.parentController = parentController;
+
+        if (admin != null) {
+            this.currentAdmin = admin;
+        } else {
+            System.err.println("⚠️ Error: currentAdmin is NULL in UserItemController");
+        }
+
         usernameLabel.setText(user.getUsername());
         emailLabel.setText(user.getEmail());
         statusLabel.setText(user.getStatus().toString());
-        this.parentController = parentController;
-
 
         if (user.getProfilePicture() != null) {
             profileImage.setImage(new Image(new ByteArrayInputStream(user.getProfilePicture())));
         }
+
         if (user.getStatus() == UserStatus.BANNED) {
             banButton.setDisable(true);
             activateButton.setDisable(false);
@@ -43,15 +60,19 @@ public class UserItemController {
             activateButton.setDisable(true);
         }
     }
-        @FXML
-        private void handleDeleteUser () {
-            if (user != null) {
-                userDAO.deleteUser(user.getId());
-                parentController.refreshUserList(); // refresh the UI
-            }
+
+    @FXML
+    private void handleDeleteUser() {
+        if (user != null) {
+            AdminActionLogger.showPopUpWind(currentAdmin.getId(), "DELETE_USER", user.getId(), "USER");
+            userDAO.deleteUser(user.getId());
+            parentController.refreshUserList(); // refresh the UI
         }
+    }
+
     @FXML
     private void handleBanUser() {
+        AdminActionLogger.showPopUpWind(currentAdmin.getId(), "BAN_USER", user.getId(), "USER");
         userDAO.updateUserStatus(user.getId(), UserStatus.BANNED);
         statusLabel.setText("BANNED");
         banButton.setDisable(true);
