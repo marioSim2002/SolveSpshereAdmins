@@ -13,6 +13,8 @@
         <Label fx:id="categoryLabel" style="-fx-font-size: 12px;"/>
         <Label fx:id="createdAtLabel" style="-fx-font-size: 12px; -fx-text-fill: gray;"/>
     </VBox>
-
+    <Label fx:id="reportsStat" visible="false" style="-fx-text-fill: red;"/>
     <Button text="Delete" fx:id="deleteButton" onAction="#handleDeleteProblem" style="-fx-text-fill: red;"/>
+    <Button text="Open Details" fx:id="openBt" onAction="#openProblemDetails" style="-fx-text-fill: green;"/>
+
 </HBox>

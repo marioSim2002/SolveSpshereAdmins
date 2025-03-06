@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/19"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.solvesphereadmins.Controllers.ProblemDetailsController">
+
+    <!-- Anchor the ScrollPane on all sides for full responsiveness -->
+    <ScrollPane fitToWidth="true" fitToHeight="true"
+                AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+                AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+        <VBox spacing="15" alignment="CENTER" style="-fx-padding: 15px;">
+
+            <!-- Title -->
+            <Label text="Problem Details" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+            <Label fx:id="titleLabel" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+            <Label fx:id="descriptionLabel" style="-fx-font-size: 14px;"/>
+            <Label fx:id="categoryLabel" style="-fx-font-size: 14px;"/>
+            <Label fx:id="createdAtLabel" style="-fx-font-size: 14px; -fx-text-fill: gray;"/>
+
+            <!-- Reports Section -->
+            <Label text="Problem Reports" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+            <!-- Allow the table to grow/shrink with the window by using VBox.vgrow="ALWAYS" -->
+            <TableView fx:id="reportsTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn text="Reporter ID" fx:id="reporterIdColumn" prefWidth="100"/>
+                    <TableColumn text="Reason" fx:id="reportReasonColumn" prefWidth="300"/>
+                    <TableColumn text="Created At" fx:id="reportCreatedAtColumn" prefWidth="150"/>
+                </columns>
+            </TableView>
+
+            <!-- Button Container -->
+            <HBox spacing="20" alignment="CENTER">
+                <Button text="Delete Problem" onAction="#handleDelete" style="-fx-background-color: red; -fx-text-fill: white;"/>
+                <Button text="Close" onAction="#handleClose"/>
+            </HBox>
+
+        </VBox>
+    </ScrollPane>
+
+</AnchorPane>

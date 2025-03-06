@@ -15,7 +15,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public List<User> geAllUsers() {
         List<User> users = new ArrayList<>();
-        String query = "SELECT * FROM solvesphere_users";
+        String query = "SELECT * FROM users";
 
         try (Connection conn = SolveShereDBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);

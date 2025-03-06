@@ -97,7 +97,7 @@ public class ManageUsersController {
     public void handleSearch() {
         String query = searchField.getText().toLowerCase();
         List<User> filteredUsers = allUsers.stream()
-                .filter(u -> u.getUsername().toLowerCase().contains(query) || u.getEmail().toLowerCase().contains(query))
+                .filter(u -> u.getUsername().toLowerCase().contains(query) || u.getEmail().toLowerCase().contains(query)||String.valueOf(u.getId()).contains(query))
                 .collect(Collectors.toList());
         updateUserList(filteredUsers);
     }

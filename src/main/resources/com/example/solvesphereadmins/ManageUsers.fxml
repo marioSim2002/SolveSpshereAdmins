@@ -15,7 +15,7 @@
 
     <!-- Search and Filter Section -->
     <HBox spacing="10">
-        <TextField fx:id="searchField" promptText="Search by username or email..." onKeyReleased="#handleSearch"/>
+        <TextField fx:id="searchField" promptText="Search by username, email or ID..." onKeyReleased="#handleSearch" prefWidth="250"/>
         <ComboBox fx:id="filterRoleComboBox" onAction="#handleFilter">
             <items>
                 <FXCollections fx:factory="observableArrayList">
