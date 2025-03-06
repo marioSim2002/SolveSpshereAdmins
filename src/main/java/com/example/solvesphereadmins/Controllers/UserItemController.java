@@ -83,6 +83,7 @@ public class UserItemController {
 
     @FXML
     private void handleActivateUser() {
+        AdminActionLogger.logAdminAction(currentAdmin.getId(), "REACTIVATE_USER", user.getId(), "USER","REACTIVATED");
         userDAO.updateUserStatus(user.getId(), UserStatus.ACTIVE);
         statusLabel.setText("ACTIVE");
         banButton.setDisable(false);

@@ -1,5 +1,6 @@
 package com.example.solvesphereadmins.AdminUnit;
 
+import com.example.solvesphereadmins.DatabaseConnection;
 import com.example.solvesphereadmins.SolveShereDBConnection;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -50,8 +51,8 @@ public class AdminActionLogger {
      */
     public static void logAdminAction(int adminId, String actionType, Long targetId, String targetType, String description) {
         String query = "INSERT INTO admin_actions (admin_id, action_type, target_id, target_type, description) VALUES (?, ?, ?, ?, ?)";
-
-        try (Connection conn = SolveShereDBConnection.getConnection();
+        System.out.println("INSERTING...!");
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, adminId);
@@ -68,8 +69,6 @@ public class AdminActionLogger {
             System.out.println("Admin action logged: " + description);
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         }
     }
 }
