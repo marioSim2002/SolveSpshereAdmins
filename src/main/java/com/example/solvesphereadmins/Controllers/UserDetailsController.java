@@ -1,6 +1,7 @@
 package com.example.solvesphereadmins.Controllers;
 
 import com.example.solvesphereadmins.AdminUnit.Admin;
+import com.example.solvesphereadmins.AdminUnit.AdminActionLogger;
 import com.example.solvesphereadmins.AdminUnit.Comment;
 import com.example.solvesphereadmins.RetrievedUserData.*;
 import javafx.animation.KeyFrame;
@@ -45,8 +46,8 @@ public class UserDetailsController {
     private final CommentDAO commentDAO = new CommentDAOImpl();
     private final ProblemDAO problemDAO = new ProblemDAOImpl();
     private User user;
-    private Timeline refreshTimeline; // Timer to auto-refresh data
-    private Admin admin;
+    private Admin admin ;
+    private Timeline refreshTimeline; //auto-refresh data
 
     private void startAutoRefresh() {
         refreshTimeline = new Timeline(new KeyFrame(Duration.seconds(10), event -> refreshUserData()));
@@ -70,7 +71,7 @@ public class UserDetailsController {
         countryLabel.setText("Country: " + user.getCountry());
         dobLabel.setText("Date of Birth: " + user.getDateOfBirth());
 
-        // Convert profile picture BLOB to image
+        //convert profile picture BLOB to image
         if (user.getProfilePicture() != null && user.getProfilePicture().length > 0) {
             profileImage.setImage(new Image(new ByteArrayInputStream(user.getProfilePicture())));
         }
@@ -81,6 +82,7 @@ public class UserDetailsController {
         loadUserComments();
         loadUserProblems();
         loadCategoryChart();
+        startAutoRefresh();
     }
 
     private void setupCommentTable() {
@@ -133,8 +135,10 @@ public class UserDetailsController {
     private void handleDeleteComment() {
         Comment selectedComment = commentsTable.getSelectionModel().getSelectedItem();
         if (selectedComment != null) {
-            commentDAO.deleteComment(selectedComment.getId());
-            loadUserComments(); // Refresh table
+            if (AdminActionLogger.showPopUpWind(admin.getId(), "COMMENT_DELETION", selectedComment.getId(), "COMMENT")) {
+                commentDAO.deleteComment(selectedComment.getId());
+                loadUserComments();
+            }
         }
     }
 
@@ -154,5 +158,7 @@ public class UserDetailsController {
         stage.close();
     }
 
-    public void setAdmin(Admin currentAdmin) {this.admin = currentAdmin;}
+    public void setAdmin(Admin currentAdmin) {
+        this.admin = currentAdmin;
+    }
 }
