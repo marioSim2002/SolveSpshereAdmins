@@ -10,6 +10,8 @@ import java.util.List;
 
 public class CommentDAOImpl implements CommentDAO {
 
+    // data access obj for comments operations  //
+
     @Override
     public List<Comment> getCommentsByUserId(long userId) {
         List<Comment> comments = new ArrayList<>();

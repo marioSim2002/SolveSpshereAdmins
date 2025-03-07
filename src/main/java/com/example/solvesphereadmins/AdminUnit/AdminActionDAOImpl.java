@@ -9,6 +9,7 @@ import java.util.List;
 
 public class AdminActionDAOImpl implements AdminActionDAO {
 
+    // data access obj for admin actions logger //
     @Override
     public void logAdminAction(int adminId, String actionType, Integer targetId, String targetType, String description) {
         try (Connection conn = DatabaseConnection.getConnection();

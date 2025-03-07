@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 public class ProblemDAOImpl implements ProblemDAO {
+
+    // data access obj for problems operations  //
+
     @Override
     public List<Problem> getProblemsByUserId(long userId) {
         List<Problem> problems = new ArrayList<>();

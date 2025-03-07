@@ -12,36 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAOImpl implements UserDAO {
-    @Override
-    public List<User> geAllUsers() {
-        List<User> users = new ArrayList<>();
-        String query = "SELECT * FROM users";
 
-        try (Connection conn = SolveShereDBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
+    // data access obj for user operations  //
 
-            while (rs.next()) {
-                User.UserStatus status = rs.getBoolean("ACTIVE") ? User.UserStatus.ACTIVE : UserStatus.INACTIVE;
-                users.add(new User(
-                        rs.getLong("id"),
-                        rs.getString("username"),
-                        rs.getString("email"),
-                        rs.getString("password"),
-                        rs.getDate("date_of_birth"),
-                        rs.getString("country"),
-                        rs.getDate("registration_date"),
-                        rs.getBytes("profile_picture"),
-                        status
-                ));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return users;
-    }
 
     @Override
     public Long getUserIdByUsernameAndEmail(String username, String email) {
@@ -67,14 +40,13 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
-        String query = "SELECT * FROM users";
 
         try (Connection conn = SolveShereDBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query);
+             PreparedStatement stmt = conn.prepareStatement(UserQueries.GET_ALL_USERS);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                // Fix: Retrieve ACTIVE column as a String
+                //Retrieve ACTIVE column as a String
                 String statusString = rs.getString("ACTIVE");
                 UserStatus status;
 
@@ -112,10 +84,9 @@ public class UserDAOImpl implements UserDAO {
     }
     @Override
     public void updateUserStatus(long userId, UserStatus status) {
-        String query = "UPDATE users SET ACTIVE = ? WHERE id = ?";
 
         try (Connection conn = SolveShereDBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+             PreparedStatement stmt = conn.prepareStatement(UserQueries.UPDATE_USER_ACTIVITY_STATUS)) {
             stmt.setString(1, status.toString()); //store status as String
             stmt.setLong(2, userId);
             stmt.executeUpdate();
@@ -128,10 +99,9 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void deleteUser(long userId) {
-        String query = "DELETE FROM users WHERE id = ?";
 
         try (Connection conn = SolveShereDBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+             PreparedStatement stmt = conn.prepareStatement(UserQueries.DELETE_USER_BY_ID)) {
 
             stmt.setLong(1, userId);
             int affectedRows = stmt.executeUpdate();

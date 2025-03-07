@@ -3,7 +3,6 @@ package com.example.solvesphereadmins.RetrievedUserData;
 import java.util.List;
 
 public interface UserDAO {
-    List<User> geAllUsers();
 
     Long getUserIdByUsernameAndEmail(String username, String email);
 
