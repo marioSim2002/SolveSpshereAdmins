@@ -14,6 +14,7 @@ import java.util.List;
 
 
 public class ProblemDetailsController {
+    @FXML private Label ownerId;
     @FXML private Label titleLabel;
     @FXML private Label descriptionLabel;
     @FXML private Label categoryLabel;
@@ -34,7 +35,7 @@ public class ProblemDetailsController {
         descriptionLabel.setText("Description: " + problem.getDescription());
         categoryLabel.setText("Category: " + problem.getCategory());
         createdAtLabel.setText("Created At: " + problem.getCreatedAt().toString());
-
+        ownerId.setText("Post owner ID: "+ problem.getUserId());
         loadProblemReports();
     }
 
