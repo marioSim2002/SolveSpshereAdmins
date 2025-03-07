@@ -1,0 +1,26 @@
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+
+<VBox spacing="15" alignment="CENTER" style="-fx-padding: 15px;"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.solvesphereadmins.Controllers.AdminLogsController">
+
+    <Label text="Admin Activity Logs" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+    <TableView fx:id="logsTable" prefHeight="400">
+        <columns>
+            <TableColumn text="Admin ID" fx:id="adminIdColumn" prefWidth="100"/>
+            <TableColumn text="Action Type" fx:id="actionTypeColumn" prefWidth="150"/>
+            <TableColumn text="Target ID" fx:id="targetIdColumn" prefWidth="100"/>
+            <TableColumn text="Target Type" fx:id="targetTypeColumn" prefWidth="150"/>
+            <TableColumn text="Description" fx:id="descriptionColumn" prefWidth="300"/>
+            <TableColumn text="Timestamp" fx:id="timestampColumn" prefWidth="200"/>
+        </columns>
+    </TableView>
+    <Button text="Export to PDF" onAction="#handlePDFExportation"/>
+    <Button text="Close" onAction="#handleClose"/>
+</VBox>

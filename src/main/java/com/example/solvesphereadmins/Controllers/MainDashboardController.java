@@ -24,10 +24,11 @@ public class MainDashboardController {
     @FXML private StackPane manageUsers;
     @FXML private StackPane managePosts;
     @FXML private StackPane manageComments;
+    @FXML private StackPane manageLogs;
 
         public void init(Admin passedAdmin){
         this.currentAdmin = passedAdmin;
-        List<StackPane> cards = List.of(manageAdmins, manageUsers, managePosts, manageComments);
+        List<StackPane> cards = List.of(manageAdmins, manageUsers, managePosts, manageComments,manageLogs);
 
         // shadow effect
         DropShadow shadowEffect = new DropShadow();
@@ -115,5 +116,19 @@ public class MainDashboardController {
     }
 
     public void handleManageComments() {
+    }
+
+    public void handleManageLogs() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/solvesphereadmins/AdminLogs.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Admin Logs");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

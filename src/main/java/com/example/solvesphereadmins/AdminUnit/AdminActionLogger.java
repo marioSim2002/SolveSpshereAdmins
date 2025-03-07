@@ -1,7 +1,6 @@
 package com.example.solvesphereadmins.AdminUnit;
 
 import com.example.solvesphereadmins.DatabaseConnection;
-import com.example.solvesphereadmins.SolveShereDBConnection;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
@@ -18,6 +17,7 @@ public class AdminActionLogger {
     /**
      * Shows a popup window to get the admin's description of the action.
      * If the admin provides a description, it logs the action.
+     * the goal is to log the admins actions in the database as a history of actions
      */
     public static boolean showPopUpWind(int adminId, String actionType, Long targetId, String targetType) {
         // Create the popup dialog
@@ -25,7 +25,6 @@ public class AdminActionLogger {
         alert.setTitle("Admin Action Description");
         alert.setHeaderText("Provide a description for this action:");
 
-        // Create a text area for input
         TextArea descriptionField = new TextArea();
         descriptionField.setPromptText("Enter action description...");
         descriptionField.setWrapText(true);
@@ -33,10 +32,10 @@ public class AdminActionLogger {
         VBox vbox = new VBox(descriptionField);
         alert.getDialogPane().setContent(vbox);
 
-        // Show the popup and wait for user input
+        // show the popup and wait for user input
         Optional<ButtonType> result = alert.showAndWait();
 
-        // If admin clicks OK, log the action
+        //ok, perform and proceed with action //
         if (result.isPresent() && result.get() == ButtonType.OK) {
             String description = descriptionField.getText().trim();
             logAdminAction(adminId, actionType, targetId, targetType, description);
@@ -47,7 +46,7 @@ public class AdminActionLogger {
 
 
     /**
-     * Logs the admin action in the database.
+     * Logs the admin action in the database, separately with no popup
      */
     public static void logAdminAction(int adminId, String actionType, Long targetId, String targetType, String description) {
         String query = "INSERT INTO admin_actions (admin_id, action_type, target_id, target_type, description) VALUES (?, ?, ?, ?, ?)";

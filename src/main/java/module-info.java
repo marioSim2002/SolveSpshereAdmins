@@ -12,6 +12,7 @@ module com.example.solvesphereadmins {
     requires com.almasb.fxgl.all;
     requires java.sql;
     requires spring.security.crypto;
+    requires itextpdf;
 
     opens com.example.solvesphereadmins to javafx.fxml;
     exports com.example.solvesphereadmins;
