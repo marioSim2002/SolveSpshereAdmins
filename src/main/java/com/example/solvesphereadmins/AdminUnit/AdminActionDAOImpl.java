@@ -1,6 +1,8 @@
 package com.example.solvesphereadmins.AdminUnit;
 
 import com.example.solvesphereadmins.DatabaseConnection;
+import sqlQueries.AdminQueries;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +11,8 @@ public class AdminActionDAOImpl implements AdminActionDAO {
 
     @Override
     public void logAdminAction(int adminId, String actionType, Integer targetId, String targetType, String description) {
-        String query = "INSERT INTO admin_actions (admin_id, action_type, target_id, target_type, description) VALUES (?, ?, ?, ?, ?)";
-
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+             PreparedStatement stmt = conn.prepareStatement(AdminQueries.INSERT_ADMIN_ACT_SCRIPT)) {
 
             stmt.setInt(1, adminId);
             stmt.setString(2, actionType);
@@ -36,10 +36,8 @@ public class AdminActionDAOImpl implements AdminActionDAO {
     @Override
     public List<AdminAction> getAllAdminActions() {
         List<AdminAction> actions = new ArrayList<>();
-        String query = "SELECT * FROM admin_actions ORDER BY timestamp DESC";
-
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query);
+             PreparedStatement stmt = conn.prepareStatement(AdminQueries.GET_ALL_ADMINS_ACTS);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
@@ -62,10 +60,9 @@ public class AdminActionDAOImpl implements AdminActionDAO {
     @Override
     public List<AdminAction> getActionsByAdminId(int adminId) {
         List<AdminAction> actions = new ArrayList<>();
-        String query = "SELECT * FROM admin_actions WHERE admin_id = ? ORDER BY timestamp DESC";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+             PreparedStatement stmt = conn.prepareStatement(AdminQueries.GET_ADMIN_ACT_BY_ID)) {
 
             stmt.setInt(1, adminId);
             ResultSet rs = stmt.executeQuery();
@@ -89,10 +86,8 @@ public class AdminActionDAOImpl implements AdminActionDAO {
 
     @Override
     public void deleteAdminAction(int actionId) {
-        String query = "DELETE FROM admin_actions WHERE id = ?";
-
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+             PreparedStatement stmt = conn.prepareStatement(AdminQueries.DELETE_ADMIN_ACTION)) {
 
             stmt.setInt(1, actionId);
             stmt.executeUpdate();
