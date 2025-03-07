@@ -28,10 +28,6 @@ public abstract class AlertsUnit {
     public static void successAddAlert() {
         showAlert(Alert.AlertType.INFORMATION, "Success", "Your problem has been posted\nothers can interact with it and suggest solutions.");
     }
-    public static void successUserDetailUpdate() {
-        showAlert(Alert.AlertType.INFORMATION, "Success", "Your details have been updated\n.Your account personal details have been updated");
-    }
-
 
     public static void userAlreadyRegistered() {
         showAlert(Alert.AlertType.WARNING, "Registration Warning", "User already exists", "The username or email you entered is already registered.");
@@ -63,5 +59,9 @@ public abstract class AlertsUnit {
 
     public static void showAccessDeniedAlert() {
         showAlert(Alert.AlertType.ERROR, "Access Denied!", "You do not have permission to access this page, Contact super-admin.");
+    }
+
+    public static void successExAlert() {
+        showAlert(Alert.AlertType.INFORMATION, "Success", "File exported successfully.");
     }
 }
