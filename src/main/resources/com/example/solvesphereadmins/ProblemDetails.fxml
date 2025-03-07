@@ -37,6 +37,7 @@
 
             <!-- Button Container -->
             <HBox spacing="20" alignment="CENTER">
+                <Button text="Delete Selected Report" onAction="#handleDeleteReport"/>
                 <Button text="Delete Problem" onAction="#handleDelete" style="-fx-background-color: red; -fx-text-fill: white;"/>
                 <Button text="Close" onAction="#handleClose"/>
             </HBox>

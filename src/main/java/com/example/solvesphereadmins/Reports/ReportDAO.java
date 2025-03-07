@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ReportDAO {
     List<Report> getReportsByProblemId(long problemId);
+
+    void deleteReport(long reportId);
 }

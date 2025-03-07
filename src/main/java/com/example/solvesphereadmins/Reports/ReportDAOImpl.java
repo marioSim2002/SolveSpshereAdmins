@@ -1,6 +1,6 @@
-package com.example.solvesphereadmins.RetrievedUserData;
+package com.example.solvesphereadmins.Reports;
 
-import com.example.solvesphereadmins.Reports.ReportDAO;
+import com.example.solvesphereadmins.RetrievedUserData.Report;
 import com.example.solvesphereadmins.SolveShereDBConnection;
 
 import java.sql.*;
@@ -35,4 +35,18 @@ public class ReportDAOImpl implements ReportDAO {
         }
         return reports;
     }
+    @Override
+    public void deleteReport(long reportId) {
+        String query = "DELETE FROM reports WHERE id = ?";
+
+        try (Connection conn = SolveShereDBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setLong(1, reportId);
+            stmt.executeUpdate();
+            System.out.println("Report deleted successfully.");
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
