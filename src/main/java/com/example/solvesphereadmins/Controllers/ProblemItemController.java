@@ -67,6 +67,8 @@ public class ProblemItemController {
             controller.setProblem(problem);
 
             Stage stage = new Stage();
+            stage.setHeight(550);
+            stage.setWidth(600);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Problem Details");
             stage.setScene(new Scene(pane));

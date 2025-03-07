@@ -69,7 +69,7 @@ public class ManageProblemsController {
     private void handleSearch() {
         String searchText = searchField.getText().toLowerCase().trim();
         List<Problem> filtered = allProblems.stream()
-                .filter(p -> p.getTitle().toLowerCase().contains(searchText) ||
+                .filter(p -> p.getTitle().toLowerCase().contains(searchText) || String.valueOf(p.getUserId()).contains(searchText) ||
                         p.getCategory().toLowerCase().contains(searchText))
                 .collect(Collectors.toList());
         updatePostsList(filtered);
