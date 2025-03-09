@@ -116,6 +116,16 @@ public class MainDashboardController {
     }
 
     public void handleManageComments() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/solvesphereadmins/ManageComments.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Manage Comments");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void handleManageLogs() {

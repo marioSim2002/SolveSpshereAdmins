@@ -1,7 +1,5 @@
 package com.example.solvesphereadmins.RetrievedUserData;
 
-import com.example.solvesphereadmins.AdminUnit.Comment;
-import com.example.solvesphereadmins.RetrievedUserData.CommentDAO;
 import com.example.solvesphereadmins.SolveShereDBConnection;
 
 import java.sql.*;
@@ -10,8 +8,7 @@ import java.util.List;
 
 public class CommentDAOImpl implements CommentDAO {
 
-    // data access obj for comments operations  //
-
+    // Fetch comments by user ID
     @Override
     public List<Comment> getCommentsByUserId(long userId) {
         List<Comment> comments = new ArrayList<>();
@@ -29,17 +26,48 @@ public class CommentDAOImpl implements CommentDAO {
                         rs.getLong("user_id"),
                         rs.getLong("problem_id"),
                         rs.getString("content"),
-                        rs.getTimestamp("created_at")
+                        rs.getTimestamp("created_at"),
+                        rs.getInt("upvotes"),
+                        rs.getInt("downvotes"),
+                        rs.getInt("is_solution")
                 ));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         }
         return comments;
     }
 
+    // Fetch all comments
+    @Override
+    public List<Comment> getAllComments() {
+        List<Comment> comments = new ArrayList<>();
+        String query = "SELECT * FROM comments";
+
+        try (Connection conn = SolveShereDBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                comments.add(new Comment(
+                        rs.getLong("id"),
+                        rs.getLong("user_id"),
+                        rs.getLong("problem_id"),
+                        rs.getString("content"),
+                        rs.getTimestamp("created_at"),
+                        rs.getInt("upvotes"),
+                        rs.getInt("downvotes"),
+                        rs.getInt("is_solution")
+                ));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return comments;
+    }
+
+    // Delete a comment by ID
     @Override
     public void deleteComment(long commentId) {
         String query = "DELETE FROM comments WHERE id = ?";
@@ -49,10 +77,8 @@ public class CommentDAOImpl implements CommentDAO {
 
             stmt.setLong(1, commentId);
             stmt.executeUpdate();
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         }
     }
 }

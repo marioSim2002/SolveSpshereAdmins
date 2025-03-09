@@ -53,7 +53,7 @@ public class UserDAOImpl implements UserDAO {
                 //convert string to enum
                 switch (statusString.toUpperCase()) {
                     case "ACTIVE":
-                        status = UserStatus.ACTIVE;
+                        status = UserStatus.ACTIVE;  //enum
                         break;
                     case "BANNED":
                         status = UserStatus.BANNED;

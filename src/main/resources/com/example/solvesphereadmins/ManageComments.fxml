@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/19"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.solvesphereadmins.Controllers.ManageCommentsController"
+            prefHeight="500.0" prefWidth="700.0">
+
+    <!-- Main VBox Layout -->
+    <VBox spacing="10" alignment="CENTER" style="-fx-padding: 15px;"
+          AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+
+        <!-- Title -->
+        <Label text="Manage Comments"
+               style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+        <!-- Search Bar -->
+        <!-- Removed maxWidth so it can expand; adjust if you prefer a fixed max -->
+        <TextField fx:id="searchField"
+                   promptText="Search by content or user ID..."
+                   onKeyReleased="#handleSearch"/>
+
+        <!-- Total Count -->
+        <Label fx:id="totalCommentsLabel"
+               style="-fx-font-size: 14px;"/>
+
+        <!-- ScrollPane with ListView, set to grow with VBox -->
+        <ScrollPane fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS">
+            <ListView fx:id="commentsListView"/>
+        </ScrollPane>
+
+        <!-- Buttons Section -->
+        <HBox spacing="10" alignment="CENTER">
+            <Button text="Close"
+                    onAction="#handleClose"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

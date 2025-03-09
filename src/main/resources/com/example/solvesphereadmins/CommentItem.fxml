@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<HBox spacing="15" style="-fx-padding: 10px; -fx-border-color: #ddd; -fx-border-radius: 5px; -fx-background-color: white;"
+      xmlns="http://javafx.com/javafx/19"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.solvesphereadmins.Controllers.CommentItemController">
+
+    <VBox spacing="5">
+        <Label fx:id="contentLabel" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+        <Label fx:id="ownerLabel" style="-fx-font-size: 12px;"/>
+        <Label fx:id="createdAtLabel" style="-fx-font-size: 12px; -fx-text-fill: gray;"/>
+    </VBox>
+
+    <Button text="View Details" fx:id="viewDetailsButton" onAction="#handleViewDetails"/>
+</HBox>

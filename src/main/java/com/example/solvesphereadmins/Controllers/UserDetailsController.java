@@ -2,7 +2,7 @@ package com.example.solvesphereadmins.Controllers;
 
 import com.example.solvesphereadmins.AdminUnit.Admin;
 import com.example.solvesphereadmins.AdminUnit.AdminActionLogger;
-import com.example.solvesphereadmins.AdminUnit.Comment;
+import com.example.solvesphereadmins.RetrievedUserData.Comment;
 import com.example.solvesphereadmins.RetrievedUserData.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
