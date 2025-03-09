@@ -3,6 +3,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <AnchorPane xmlns="http://javafx.com/javafx/19"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.solvesphereadmins.Controllers.ManageCommentsController"
@@ -17,17 +19,33 @@
         <Label text="Manage Comments"
                style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
 
-        <!-- Search Bar -->
-        <!-- Removed maxWidth so it can expand; adjust if you prefer a fixed max -->
-        <TextField fx:id="searchField"
-                   promptText="Search by content or user ID..."
-                   onKeyReleased="#handleSearch"/>
+        <!-- Search & Filter Section -->
+        <HBox spacing="10" alignment="CENTER">
+            <TextField fx:id="searchField"
+                       promptText="Search by content or user ID..."
+                       onKeyReleased="#handleSearch"/>
+
+            <ComboBox fx:id="sortComboBox"
+                      onAction="#handleSort"
+                      promptText="Sort By">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Most Upvoted"/>
+                        <String fx:value="Least Upvoted"/>
+                    </FXCollections>
+                </items>
+            </ComboBox>
+
+            <CheckBox fx:id="solutionFilterCheckBox"
+                      text="Show Only Solutions"
+                      onAction="#handleFilterSolutions"/>
+        </HBox>
 
         <!-- Total Count -->
         <Label fx:id="totalCommentsLabel"
                style="-fx-font-size: 14px;"/>
 
-        <!-- ScrollPane with ListView, set to grow with VBox -->
+        <!-- ScrollPane with ListView -->
         <ScrollPane fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS">
             <ListView fx:id="commentsListView"/>
         </ScrollPane>
