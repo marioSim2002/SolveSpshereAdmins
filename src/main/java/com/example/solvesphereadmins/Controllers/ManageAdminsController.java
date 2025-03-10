@@ -67,7 +67,6 @@ public class ManageAdminsController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/solvesphereadmins/AddAdmin.fxml"));
             Parent root = loader.load();
-
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Add Admin");
@@ -80,6 +79,9 @@ public class ManageAdminsController {
             e.printStackTrace();
         }
     }
+
+    //todo - option to delete admins //
+
     @FXML
     private void handleFilter() {
         String selectedRole = filterRoleComboBox.getValue();

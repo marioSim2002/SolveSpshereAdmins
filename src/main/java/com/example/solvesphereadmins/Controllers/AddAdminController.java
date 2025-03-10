@@ -10,6 +10,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.sql.SQLException;
 import java.util.Optional;
 
 public class AddAdminController {
@@ -17,16 +18,15 @@ public class AddAdminController {
     @FXML private PasswordField passwordField;
     @FXML private TextField emailField;
     @FXML private ComboBox<String> roleComboBox;
-
     private final AdminDAO adminDAO = new AdminDAOImpl();
 
     @FXML
-    public void handleAddAdmin() {
+    public void handleAddAdmin() throws SQLException, ClassNotFoundException {
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
         String email = emailField.getText().trim();
         String role = roleComboBox.getValue();
-
+;
         if (username.isEmpty() || password.isEmpty() || email.isEmpty() || role == null) {
             showAlert("Missing Fields", "Please fill in all fields.");
             return;
@@ -37,7 +37,7 @@ public class AddAdminController {
             return;
         }
 
-        // Confirm before adding admin
+        //confirm before adding admin
         Optional<ButtonType> confirmation = showConfirmation("Add Admin", "Are you sure you want to add this admin?");
         if (confirmation.isPresent() && confirmation.get() == ButtonType.OK) {
             boolean success = adminDAO.addAdmin(username, password, email, role);

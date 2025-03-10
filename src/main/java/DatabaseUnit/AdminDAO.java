@@ -2,6 +2,7 @@ package DatabaseUnit;
 
 import com.example.solvesphereadmins.AdminUnit.Admin;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface AdminDAO {
@@ -16,4 +17,5 @@ public interface AdminDAO {
     void updateAdminStatus(int adminId, String status);
 
     boolean adminExists(String username, String email);
+
 }

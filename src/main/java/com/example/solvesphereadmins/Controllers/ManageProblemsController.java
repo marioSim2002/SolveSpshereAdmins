@@ -52,7 +52,7 @@ public class ManageProblemsController {
                 e.printStackTrace();
             }
         }
-        postsListView.setItems(postItems);
+        if(postsListView!=null) {postsListView.setItems(postItems);}
     }
 
     private void updateCategoryChart(List<Problem> problems) {

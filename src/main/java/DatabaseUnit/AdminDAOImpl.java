@@ -1,15 +1,15 @@
 package DatabaseUnit;
 
 import com.example.solvesphereadmins.AdminUnit.Admin;
+import com.example.solvesphereadmins.AlertsUnit;
 import com.example.solvesphereadmins.DatabaseConnection;
 import com.example.solvesphereadmins.SecurityUnit.PasswordHasher;
+import com.example.solvesphereadmins.SolveShereDBConnection;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import sqlQueries.AdminQueries;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,49 +43,50 @@ public class AdminDAOImpl implements AdminDAO {
         return admins;
     }
 
-        @Override
-        public boolean addAdmin(String username, String password, String email, String role) {
-            if (adminExists(username, email)) {
-                return false; // Admin already exists
-            }
-
-            String hashedPassword = passwordHasher.hashPassword(password); //hash password before saving
-
-            String query = "INSERT INTO admin (username, password, email, status, role) VALUES (?, ?, ?, 'ACTIVE', ?)";
-
-            try (Connection conn = DatabaseConnection.getConnection();
-                 PreparedStatement stmt = conn.prepareStatement(query)) {
-
-                stmt.setString(1, username);
-                stmt.setString(2, hashedPassword);
-                stmt.setString(3, email);
-                stmt.setString(4, role);
-
-                int rowsAffected = stmt.executeUpdate();
-                return rowsAffected > 0;
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return false;
-            }
+    @Override
+    public boolean addAdmin(String username, String password, String email, String role) {
+        if (adminExists(username, email)) {
+            return false; // Admin already exists
         }
-        @Override
-        public boolean adminExists(String username, String email) {
-            String query = "SELECT * FROM admin WHERE username = ? OR email = ?";
 
-            try (Connection conn = DatabaseConnection.getConnection();
-                 PreparedStatement stmt = conn.prepareStatement(query)) {
+        String hashedPassword = passwordHasher.hashPassword(password); //hash password before saving
 
-                stmt.setString(1, username);
-                stmt.setString(2, email);
-                ResultSet rs = stmt.executeQuery();
-                return rs.next(); //returns true if an admin with the same username/email exists
+        String query = "INSERT INTO admin (username, password, email, status, role) VALUES (?, ?, ?, 'ACTIVE', ?)";
 
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return false;
-            }
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, username);
+            stmt.setString(2, hashedPassword);
+            stmt.setString(3, email);
+            stmt.setString(4, role);
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
+    }
+
+    @Override
+    public boolean adminExists(String username, String email) {
+        String query = "SELECT * FROM admin WHERE username = ? OR email = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, username);
+            stmt.setString(2, email);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next(); //returns true if an admin with the same username/email exists
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
     @Override

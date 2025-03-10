@@ -1,6 +1,7 @@
 package com.example.solvesphereadmins.RetrievedUserData;
 
 import com.example.solvesphereadmins.SolveShereDBConnection;
+import sqlQueries.ProblemQueries;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,6 +12,11 @@ import java.util.Map;
 public class ProblemDAOImpl implements ProblemDAO {
 
     // data access obj for problems operations  //
+
+    @Override
+    public boolean addProblem(Problem problem) {
+        return false;
+    }
 
     @Override
     public List<Problem> getProblemsByUserId(long userId) {
@@ -102,5 +108,54 @@ public class ProblemDAOImpl implements ProblemDAO {
             e.printStackTrace();
         }
         return problems;
+    }
+
+    @Override
+    public List<Problem> findSimilarProblemsByTitleAndDescription(String titleInput, String descInput) throws ClassNotFoundException {
+        List<Problem> similarProblems = new ArrayList<>();
+
+        // Dynamic query building
+        String sql = "SELECT id, user_id, title, description, category, created_at, is_age_restricted " +
+                "FROM problems WHERE 1=1 ";
+
+        if (!titleInput.isEmpty()) {
+            sql += "AND INSTR(title, ?) > 0 ";
+        }
+        if (!descInput.isEmpty()) {
+            sql += "AND INSTR(description, ?) > 0 ";
+        }
+
+        sql += "ORDER BY created_at DESC LIMIT 5"; // Fetch recent 5 problems
+
+        try (Connection conn = SolveShereDBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            int paramIndex = 1;
+            if (!titleInput.isEmpty()) {
+                stmt.setString(paramIndex++, titleInput);
+            }
+            if (!descInput.isEmpty()) {
+                stmt.setString(paramIndex++, descInput);
+            }
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Problem problem = new Problem(
+                        rs.getLong("id"),               // ID
+                        rs.getLong("user_id"),          // User ID
+                        rs.getString("title"),          // Title
+                        rs.getString("description"),    // Description
+                        rs.getString("category"),       // Category
+                        rs.getTimestamp("created_at"),  // Created At
+                        rs.getBoolean("is_age_restricted") // Age Restriction
+                );
+                similarProblems.add(problem);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return similarProblems;
     }
 }

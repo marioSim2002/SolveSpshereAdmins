@@ -25,10 +25,11 @@ public class MainDashboardController {
     @FXML private StackPane managePosts;
     @FXML private StackPane manageComments;
     @FXML private StackPane manageLogs;
+    @FXML private StackPane addSols;
 
         public void init(Admin passedAdmin){
         this.currentAdmin = passedAdmin;
-        List<StackPane> cards = List.of(manageAdmins, manageUsers, managePosts, manageComments,manageLogs);
+        List<StackPane> cards = List.of(manageAdmins, manageUsers, managePosts, manageComments,manageLogs,addSols);
 
         // shadow effect
         DropShadow shadowEffect = new DropShadow();
@@ -135,6 +136,28 @@ public class MainDashboardController {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Admin Logs");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void handleAddProblem() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/solvesphereadmins/AddProblem.fxml"));
+            Parent root = loader.load();
+
+            AddProblemController addProblemController = loader.getController();
+            if (currentAdmin != null) {
+                addProblemController.setAdmin(currentAdmin);
+            } else {
+                System.err.println("ERROR: currentAdmin is NULL in handleAddProblem()");
+            }
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Admin's Solutions");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
         } catch (IOException e) {

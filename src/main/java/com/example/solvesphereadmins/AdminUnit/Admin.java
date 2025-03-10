@@ -30,4 +30,8 @@ public class Admin {
     public String getRole(){return role;}
     // Setters
     public void setStatus(String status) { this.status = status; }
+
+    public void setId(int userId) {
+        this.id = userId;
+    }
 }
