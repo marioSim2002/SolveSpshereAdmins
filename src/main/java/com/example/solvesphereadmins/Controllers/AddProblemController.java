@@ -1,7 +1,10 @@
 package com.example.solvesphereadmins.Controllers;
+
 import com.example.solvesphereadmins.AdminUnit.Admin;
 import com.example.solvesphereadmins.AlertsUnit;
-import com.example.solvesphereadmins.RetrievedUserData.*;
+import com.example.solvesphereadmins.RetrievedUserData.Problem;
+import com.example.solvesphereadmins.RetrievedUserData.ProblemDAO;
+import com.example.solvesphereadmins.RetrievedUserData.ProblemDAOImpl;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,14 +30,13 @@ public class AddProblemController {
     @FXML
     private CheckBox ageRestrictionCheckbox;
     @FXML
-    private VBox similarProblemsListView; // will hold ProblemItem components
-    private Admin currentAdmin;
+    private VBox similarProblemsListView; // Will hold ProblemItem components
 
-    private final ProblemDAO problemDAO = new ProblemDAOImpl();
+    private Admin currentAdmin;
+    private final ProblemDAO adminProblemDAO = new ProblemDAOImpl();
 
     @FXML
     public void initialize() {
-
         titleField.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
                 searchSimilarProblems(newValue, descriptionField.getText());
@@ -52,7 +54,7 @@ public class AddProblemController {
         });
     }
 
-    public void setAdmin(Admin admin){
+    public void setAdmin(Admin admin) {
         this.currentAdmin = admin;
     }
 
@@ -63,13 +65,12 @@ public class AddProblemController {
         titleInput = titleInput.trim();
         descInput = descInput.trim();
 
-        //at least one meaningful input exists
         if (titleInput.isEmpty() && descInput.isEmpty()) {
             similarProblemsListView.getChildren().clear();
             return;
         }
 
-        List<Problem> similarProblems = problemDAO.findSimilarProblemsByTitleAndDescription(titleInput, descInput);
+        List<Problem> similarProblems = adminProblemDAO.findSimilarProblemsByTitleAndDescription(titleInput, descInput);
 
         Platform.runLater(() -> {
             similarProblemsListView.getChildren().clear();
@@ -78,7 +79,7 @@ public class AddProblemController {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/solvesphereadmins/ProblemItem.fxml"));
                     Node problemItem = loader.load();
                     ProblemItemController controller = loader.getController();
-                    controller.setProblem(problem,new ManageProblemsController());
+                    controller.setProblem(problem, new ManageProblemsController());
                     similarProblemsListView.getChildren().add(problemItem);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -87,31 +88,28 @@ public class AddProblemController {
         });
     }
 
-//    public int getProblemCommentCount(Problem problem) {
-//        CommentDAO commentDAO = new CommentDAOImpl();
-//        return commentDAO.getCommentCountByProblemId(problem.getId());
-//    }
-
     @FXML
-    private void submitProblem() {
+    private void submitProblem() throws SQLException, ClassNotFoundException {
+        if (currentAdmin == null) {
+            AlertsUnit.showErrorAlert("Admin not set! Cannot submit problem.");
+            return;
+        }
+
         String title = titleField.getText();
         String description = descriptionField.getText();
         String category = categoryField.getText();
-        String tagsText = tagsField.getText();
-
-
         boolean isAgeRestricted = ageRestrictionCheckbox.isSelected();
 
-        //// todo - create an add - only admin problem solutions table
-        System.out.println(currentAdmin.getId());
-        Problem problem = new Problem(0, 0, title,description, category, Timestamp.valueOf(LocalDateTime.now()) , isAgeRestricted);
-        boolean isSuccess = problemDAO.addProblem(problem);
+        // Creating problem with the correct admin_id
+        Problem problem = new Problem(0, currentAdmin.getId(), title, description, category, Timestamp.valueOf(LocalDateTime.now()), isAgeRestricted);
+
+        boolean isSuccess = adminProblemDAO.addAdminProblem(problem);
 
         if (isSuccess) {
             AlertsUnit.successAddAlert();
             clearFields();
         } else {
-            AlertsUnit.showErrorAlert("An error occurred.");
+            AlertsUnit.showErrorAlert("An error occurred while adding the problem.");
         }
     }
 

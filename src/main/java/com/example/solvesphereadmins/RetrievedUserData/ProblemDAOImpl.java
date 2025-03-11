@@ -1,7 +1,7 @@
 package com.example.solvesphereadmins.RetrievedUserData;
 
+import com.example.solvesphereadmins.DatabaseConnection;
 import com.example.solvesphereadmins.SolveShereDBConnection;
-import sqlQueries.ProblemQueries;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,17 +13,32 @@ public class ProblemDAOImpl implements ProblemDAO {
 
     // data access obj for problems operations  //
 
+    private static final String INSERT_ADMIN_PROBLEM_SQL = "INSERT INTO admin_problems (admin_id, title, description, category, created_at, is_age_restricted) VALUES (?, ?, ?, ?, ?, ?)";
+
     @Override
-    public boolean addProblem(Problem problem) {
-        return false;
+    public boolean addAdminProblem(Problem problem) throws SQLException, ClassNotFoundException {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(INSERT_ADMIN_PROBLEM_SQL)) {
+
+            stmt.setInt(1, (int) problem.getUserId()); // Ensure admin_id is an int
+            stmt.setString(2, problem.getTitle());
+            stmt.setString(3, problem.getDescription());
+            stmt.setString(4, problem.getCategory());
+            stmt.setTimestamp(5, problem.getCreatedAt());
+            stmt.setBoolean(6, problem.isAgeRestricted());
+
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0;
+        }
     }
+
 
     @Override
     public List<Problem> getProblemsByUserId(long userId) {
         List<Problem> problems = new ArrayList<>();
         String query = "SELECT * FROM problems WHERE user_id = ?";
 
-        try (Connection conn = SolveShereDBConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setLong(1, userId);
@@ -42,8 +57,6 @@ public class ProblemDAOImpl implements ProblemDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         }
         return problems;
     }
@@ -113,10 +126,7 @@ public class ProblemDAOImpl implements ProblemDAO {
     @Override
     public List<Problem> findSimilarProblemsByTitleAndDescription(String titleInput, String descInput) throws ClassNotFoundException {
         List<Problem> similarProblems = new ArrayList<>();
-
-        // Dynamic query building
-        String sql = "SELECT id, user_id, title, description, category, created_at, is_age_restricted " +
-                "FROM problems WHERE 1=1 ";
+        String sql = "SELECT id, admin_id, title, description, category, created_at, is_age_restricted FROM admin_problems WHERE 1=1 ";
 
         if (!titleInput.isEmpty()) {
             sql += "AND INSTR(title, ?) > 0 ";
@@ -125,9 +135,9 @@ public class ProblemDAOImpl implements ProblemDAO {
             sql += "AND INSTR(description, ?) > 0 ";
         }
 
-        sql += "ORDER BY created_at DESC LIMIT 5"; // Fetch recent 5 problems
+        sql += "ORDER BY created_at DESC LIMIT 5";
 
-        try (Connection conn = SolveShereDBConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             int paramIndex = 1;
@@ -139,23 +149,24 @@ public class ProblemDAOImpl implements ProblemDAO {
             }
 
             ResultSet rs = stmt.executeQuery();
-
             while (rs.next()) {
                 Problem problem = new Problem(
-                        rs.getLong("id"),               // ID
-                        rs.getLong("user_id"),          // User ID
-                        rs.getString("title"),          // Title
-                        rs.getString("description"),    // Description
-                        rs.getString("category"),       // Category
-                        rs.getTimestamp("created_at"),  // Created At
-                        rs.getBoolean("is_age_restricted") // Age Restriction
+                        rs.getLong("id"),
+                        rs.getLong("admin_id"),
+                        rs.getString("title"),
+                        rs.getString("description"),
+                        rs.getString("category"),
+                        rs.getTimestamp("created_at"),
+                        rs.getBoolean("is_age_restricted")
                 );
                 similarProblems.add(problem);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return similarProblems;
     }
 }
+
+
