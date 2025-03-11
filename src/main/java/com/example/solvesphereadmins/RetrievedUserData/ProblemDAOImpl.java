@@ -88,7 +88,7 @@ public class ProblemDAOImpl implements ProblemDAO {
             stmt.setLong(1, userId);
             ResultSet rs = stmt.executeQuery();
 
-            while (rs.next()) {  // ✅ Iterate through ResultSet properly
+            while (rs.next()) {
                 categoryCount.put(rs.getString("category"), rs.getLong("count"));
             }
         } catch (SQLException | ClassNotFoundException e) {
