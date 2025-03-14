@@ -1,5 +1,6 @@
 package com.example.solvesphereadmins.Controllers;
 
+import com.example.solvesphereadmins.AdminUnit.Admin;
 import com.example.solvesphereadmins.RetrievedUserData.Comment;
 import com.example.solvesphereadmins.RetrievedUserData.CommentDAO;
 import com.example.solvesphereadmins.RetrievedUserData.CommentDAOImpl;
@@ -20,11 +21,9 @@ public class CommentItemController {
     private Comment comment;
     private ManageCommentsController parentController;
     private final CommentDAO commentDAO = new CommentDAOImpl();
-
-    public void setComment(Comment comment, ManageCommentsController parentController) {
+    public void setComment(Comment comment, ManageCommentsController parentController ) {
         this.comment = comment;
         this.parentController = parentController;
-
         contentLabel.setText(comment.getContent());
         ownerLabel.setText("User ID: " + comment.getUserId());
         createdAtLabel.setText("Created At: " + comment.getCreatedAt().toString());

@@ -3,6 +3,7 @@ package com.example.solvesphereadmins.Controllers;
 import DatabaseUnit.AdminDAO;
 import DatabaseUnit.AdminDAOImpl;
 import com.example.solvesphereadmins.AdminUnit.Admin;
+import com.example.solvesphereadmins.AdminUnit.SessionManager;
 import com.example.solvesphereadmins.AlertsUnit;
 import com.example.solvesphereadmins.SecurityUnit.Authenticator;
 import com.example.solvesphereadmins.SecurityUnit.PasswordHasher;
@@ -41,6 +42,7 @@ public class LoginController {
         if (admin != null) {
             System.out.println("Login Successful!");
             System.out.println("Logged in as: " + admin.getUsername());
+            SessionManager.setCurrentAdmin(admin);
             openDashboard(admin);
         } else {
             AlertsUnit.showErrorAlert("Invalid username or password.");

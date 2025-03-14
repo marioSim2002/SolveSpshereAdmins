@@ -1,6 +1,7 @@
 package com.example.solvesphereadmins.Controllers;
 
 import com.example.solvesphereadmins.AdminUnit.Admin;
+import com.example.solvesphereadmins.AdminUnit.SessionManager;
 import com.example.solvesphereadmins.AlertsUnit;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,6 +29,7 @@ public class MainDashboardController {
     @FXML private StackPane addSols;
 
         public void init(Admin passedAdmin){
+            System.out.println("SESSION MANAGER TEST:" + SessionManager.getCurrentAdmin().getId());
         this.currentAdmin = passedAdmin;
         List<StackPane> cards = List.of(manageAdmins, manageUsers, managePosts, manageComments,manageLogs,addSols);
 

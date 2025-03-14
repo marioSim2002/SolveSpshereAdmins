@@ -1,4 +1,6 @@
 package com.example.solvesphereadmins.Controllers;
+import com.example.solvesphereadmins.AdminUnit.AdminActionLogger;
+import com.example.solvesphereadmins.AdminUnit.SessionManager;
 import com.example.solvesphereadmins.RetrievedUserData.CommentDAO;
 import com.example.solvesphereadmins.RetrievedUserData.CommentDAOImpl;
 import com.example.solvesphereadmins.RetrievedUserData.Comment;
@@ -22,7 +24,6 @@ public class CommentDetailsController {
 
     public void setComment(Comment comment) {
         this.comment = comment;
-
         contentLabel.setText(comment.getContent());
         ownerLabel.setText("User ID: " + comment.getUserId());
         createdAtLabel.setText("Created At: " + comment.getCreatedAt().toString());
@@ -34,6 +35,7 @@ public class CommentDetailsController {
     @FXML
     private void handleDelete() {
         if (comment != null) {
+            AdminActionLogger.showPopUpWind(SessionManager.getCurrentAdmin().getId(),"COMMENT_DELETION", comment.getId(),"COMMENT");
             commentDAO.deleteComment(comment.getId());
             closeWindow();
         }

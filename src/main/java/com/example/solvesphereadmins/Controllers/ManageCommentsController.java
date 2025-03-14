@@ -1,4 +1,6 @@
 package com.example.solvesphereadmins.Controllers;
+import com.example.solvesphereadmins.AdminUnit.Admin;
+import com.example.solvesphereadmins.AdminUnit.SessionManager;
 import com.example.solvesphereadmins.RetrievedUserData.Comment;
 import com.example.solvesphereadmins.RetrievedUserData.CommentDAO;
 import com.example.solvesphereadmins.RetrievedUserData.CommentDAOImpl;
@@ -21,7 +23,7 @@ public class ManageCommentsController {
     @FXML private Label totalCommentsLabel;
     @FXML private ComboBox<String> sortComboBox;
     @FXML private CheckBox solutionFilterCheckBox;
-
+    private Admin currentAdmin;
 
     private final CommentDAO commentDAO = new CommentDAOImpl();
     private ObservableList<Comment> allComments = FXCollections.observableArrayList();
@@ -108,7 +110,7 @@ public class ManageCommentsController {
                 HBox commentItem = loader.load();
 
                 CommentItemController controller = loader.getController();
-                controller.setComment(comment, this); // Set the comment and pass the controller
+                controller.setComment(comment, this); // set the comment and pass the controller
 
                 commentItems.add(commentItem);
             } catch (IOException e) {
