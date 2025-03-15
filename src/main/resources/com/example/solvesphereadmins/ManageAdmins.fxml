@@ -49,5 +49,7 @@
     <HBox spacing="10">
         <Button text="Add Admin" onAction="#handleAddAdmin"/>
         <Button text="Suspend Admin" onAction="#handleSuspendAdmin"/>
+        <Button text="Re-Activate Admin" onAction="#handleActivateAdmin"/>
+
     </HBox>
 </VBox>

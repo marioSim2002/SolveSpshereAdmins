@@ -1,6 +1,7 @@
 package com.example.solvesphereadmins.Controllers;
 
 import com.example.solvesphereadmins.AdminUnit.Admin;
+import com.example.solvesphereadmins.AdminUnit.AdminAction;
 import com.example.solvesphereadmins.AdminUnit.AdminActionLogger;
 import com.example.solvesphereadmins.RetrievedUserData.Comment;
 import com.example.solvesphereadmins.RetrievedUserData.*;
@@ -146,9 +147,10 @@ public class UserDetailsController {
     private void handleDeleteProblem() {
         Problem selectedProblem = problemsTable.getSelectionModel().getSelectedItem();
         if (selectedProblem != null) {
+            AdminActionLogger.showPopUpWind(admin.getId(), "DELETE_PROBLEM", selectedProblem.getId(), "PROBLEM");
             problemDAO.deleteProblem(selectedProblem.getId());
-            loadUserProblems(); // Refresh table
-            loadCategoryChart(); // Refresh chart
+            loadUserProblems(); // refresh table
+            loadCategoryChart(); // refresh chart
         }
     }
 

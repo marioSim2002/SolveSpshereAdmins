@@ -2,8 +2,11 @@ package com.example.solvesphereadmins.Controllers;
 
 import DatabaseUnit.AdminDAO;
 import DatabaseUnit.AdminDAOImpl;
+import com.example.solvesphereadmins.AdminUnit.AdminActionLogger;
+import com.example.solvesphereadmins.AdminUnit.SessionManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -99,10 +102,7 @@ public class ManageAdminsController {
     @FXML
     private void handleSuspendAdmin() {
         Admin selectedAdmin = adminTable.getSelectionModel().getSelectedItem();
-        if (selectedAdmin == null) {
-            showAlert("No Admin Selected", "Please select an admin to suspend.");
-            return;
-        }
+        long selectedAdminId = (long) selectedAdmin.getId();
 
         if ("SUSPENDED".equals(selectedAdmin.getStatus())) {
             showAlert("Already Suspended", "This admin is already suspended.");
@@ -111,8 +111,28 @@ public class ManageAdminsController {
 
         Optional<ButtonType> confirmation = showConfirmation("Suspend Admin", "Are you sure you want to suspend " + selectedAdmin.getUsername() + "?");
         if (confirmation.isPresent() && confirmation.get() == ButtonType.OK) {
+            AdminActionLogger.showPopUpWind(SessionManager.getCurrentAdmin().getId(),"SUSPEND_ADMIN",selectedAdminId,"ADMIN");
             adminDAO.updateAdminStatus(selectedAdmin.getId(), "SUSPENDED");
-            loadAdminData(); // Refresh table
+            loadAdminData(); // refresh table
+        }
+    }
+
+
+    @FXML
+    public void handleActivateAdmin() {
+        Admin selectedAdmin = adminTable.getSelectionModel().getSelectedItem();
+        long selectedAdminId = (long) selectedAdmin.getId();
+
+        if ("SUSPENDED".equals(selectedAdmin.getStatus())) {
+            Optional<ButtonType> confirmation = showConfirmation("Re-Activate Admin", "Are you sure you want to Activate " + selectedAdmin.getUsername() + "?");
+            if (confirmation.isPresent() && confirmation.get() == ButtonType.OK) {
+                AdminActionLogger.showPopUpWind(SessionManager.getCurrentAdmin().getId(), "ADMIN_ACTIVATION", selectedAdminId, "ADMIN");
+                adminDAO.updateAdminStatus(selectedAdmin.getId(), "ACTIVE");
+                loadAdminData(); // refresh table
+            }
+        }
+        else {
+            showAlert("Already Active", "This admin is already active.");
         }
     }
 
@@ -131,4 +151,5 @@ public class ManageAdminsController {
         alert.setContentText(message);
         return alert.showAndWait();
     }
+
 }
