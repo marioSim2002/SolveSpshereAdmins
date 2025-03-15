@@ -36,14 +36,24 @@ public class LoginController {
 
         Admin admin = authenticator.authenticate(username, password);
 
-        if (admin != null) {
-            System.out.println("Login Successful!");
-            System.out.println("Logged in as: " + admin.getUsername());
-            SessionManager.setCurrentAdmin(admin);
-            openDashboard(admin);
-        } else {
+        if (admin == null) {
             AlertsUnit.showErrorAlert("Invalid username or password.");
+            return;
         }
+
+        if (adminIsSuspended(admin)) {
+            AlertsUnit.showSuspendedAdminAlert();
+            return;
+        }
+
+        System.out.println("Login Successful!\nLogged in as: " + admin.getUsername());
+        SessionManager.setCurrentAdmin(admin);
+        openDashboard(admin);
+    }
+
+
+    private boolean adminIsSuspended(Admin admin){
+        return (admin.getStatus().equalsIgnoreCase("SUSPENDED"));
     }
 
     private void openDashboard(Admin admin) {

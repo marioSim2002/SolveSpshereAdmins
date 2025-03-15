@@ -29,8 +29,8 @@ public abstract class AlertsUnit {
         showAlert(Alert.AlertType.INFORMATION, "Success", "Your problem has been posted\nothers can interact with it and suggest solutions.");
     }
 
-    public static void userAlreadyRegistered() {
-        showAlert(Alert.AlertType.WARNING, "Registration Warning", "User already exists", "The username or email you entered is already registered.");
+    public static void showSuspendedAdminAlert() {
+        showAlert(Alert.AlertType.INFORMATION, "Suspended", "You are suspended\ncontact super admin/s.");
     }
 
     public static void showSuccessRegistrationAlert() {
