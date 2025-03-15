@@ -76,7 +76,6 @@ public class UserDetailsController {
         if (user.getProfilePicture() != null && user.getProfilePicture().length > 0) {
             profileImage.setImage(new Image(new ByteArrayInputStream(user.getProfilePicture())));
         }
-
         //load user data
         setupCommentTable();
         setupProblemTable();
