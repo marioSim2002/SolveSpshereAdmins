@@ -35,7 +35,7 @@ public class MainDashboardController {
 
         // shadow effect
         DropShadow shadowEffect = new DropShadow();
-        shadowEffect.setColor(Color.web("#3498db")); // Blue shadow
+        shadowEffect.setColor(Color.web("#3498db"));
         shadowEffect.setRadius(10);
         shadowEffect.setSpread(0.2);
 

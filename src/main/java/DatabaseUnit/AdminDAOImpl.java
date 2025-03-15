@@ -46,7 +46,7 @@ public class AdminDAOImpl implements AdminDAO {
     @Override
     public boolean addAdmin(String username, String password, String email, String role) {
         if (adminExists(username, email)) {
-            return false; // Admin already exists
+            return false; // admin already exists
         }
 
         String hashedPassword = passwordHasher.hashPassword(password); //hash password before saving

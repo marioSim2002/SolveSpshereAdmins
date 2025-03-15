@@ -21,7 +21,7 @@ public class AddAdminController {
     private final AdminDAO adminDAO = new AdminDAOImpl();
 
     @FXML
-    public void handleAddAdmin() throws SQLException, ClassNotFoundException {
+    public void handleAddAdmin() {
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
         String email = emailField.getText().trim();

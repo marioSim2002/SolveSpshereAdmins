@@ -17,4 +17,6 @@ public interface ProblemDAO {
     List<Problem> getAllProblems();
 
     List<Problem> findSimilarProblemsByTitleAndDescription(String titleInput, String descInput) throws ClassNotFoundException;
+
+    List<Problem> getAdminProblems();
 }

@@ -32,6 +32,31 @@ public class ProblemDAOImpl implements ProblemDAO {
         }
     }
 
+    @Override
+    public List<Problem> getAdminProblems() {
+        List<Problem> adminProblems = new ArrayList<>();
+        String query = "SELECT * FROM admin_problems";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                adminProblems.add(new Problem(
+                        rs.getLong("id"),
+                        rs.getLong("admin_id"),
+                        rs.getString("title"),
+                        rs.getString("description"),
+                        rs.getString("category"),
+                        rs.getTimestamp("created_at"),
+                        rs.getBoolean("is_age_restricted")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return adminProblems;
+    }
 
     @Override
     public List<Problem> getProblemsByUserId(long userId) {

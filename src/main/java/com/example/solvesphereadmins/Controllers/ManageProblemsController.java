@@ -19,14 +19,18 @@ import java.util.stream.Collectors;
 public class ManageProblemsController {
     @FXML private TextField searchField;
     @FXML private ListView<HBox> postsListView;
-    @FXML private PieChart categoryChart;
+    @FXML private ListView<HBox> adminPostsListView; // admin problems section
+    @FXML private PieChart categoryChart; //pie chart for user problem categories
+    @FXML private PieChart adminCategoryChart; // pie chart for admin problem categories
 
     private final ProblemDAO problemDAO = new ProblemDAOImpl();
     private ObservableList<Problem> allProblems = FXCollections.observableArrayList();
+    private ObservableList<Problem> adminProblems = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
         loadProblems();
+        loadAdminProblems();
     }
 
     private void loadProblems() {
@@ -36,6 +40,13 @@ public class ManageProblemsController {
         updateCategoryChart(problems);
     }
 
+    private void loadAdminProblems() {
+        List<Problem> adminProbs = problemDAO.getAdminProblems();
+        adminProblems.setAll(adminProbs);
+        updateAdminPostsList(adminProbs);
+        updateAdminCategoryChart(adminProbs);
+    }
+
     private void updatePostsList(List<Problem> problems) {
         ObservableList<HBox> postItems = FXCollections.observableArrayList();
         for (Problem problem : problems) {
@@ -43,7 +54,6 @@ public class ManageProblemsController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/solvesphereadmins/ProblemItem.fxml"));
                 HBox problemItem = loader.load();
 
-                // Get the controller for the item
                 ProblemItemController controller = loader.getController();
                 controller.setProblem(problem, this);
 
@@ -52,7 +62,25 @@ public class ManageProblemsController {
                 e.printStackTrace();
             }
         }
-        if(postsListView!=null) {postsListView.setItems(postItems);}
+        if (postsListView != null) { postsListView.setItems(postItems); }
+    }
+
+    private void updateAdminPostsList(List<Problem> adminProblems) {
+        ObservableList<HBox> adminPostItems = FXCollections.observableArrayList();
+        for (Problem problem : adminProblems) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/solvesphereadmins/ProblemItem.fxml"));
+                HBox problemItem = loader.load();
+
+                ProblemItemController controller = loader.getController();
+                controller.setProblem(problem,this);
+
+                adminPostItems.add(problemItem);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (adminPostsListView != null) { adminPostsListView.setItems(adminPostItems); }
     }
 
     private void updateCategoryChart(List<Problem> problems) {
@@ -65,17 +93,37 @@ public class ManageProblemsController {
         categoryChart.setData(chartData);
     }
 
+    private void updateAdminCategoryChart(List<Problem> adminProblems) {
+        Map<String, Long> adminCategoryCount = adminProblems.stream()
+                .collect(Collectors.groupingBy(Problem::getCategory, Collectors.counting()));
+
+        ObservableList<PieChart.Data> chartData = FXCollections.observableArrayList();
+        adminCategoryCount.forEach((category, count) -> chartData.add(new PieChart.Data(category, count)));
+
+        adminCategoryChart.setData(chartData);
+    }
+
     @FXML
     private void handleSearch() {
         String searchText = searchField.getText().toLowerCase().trim();
-        List<Problem> filtered = allProblems.stream()
-                .filter(p -> p.getTitle().toLowerCase().contains(searchText) || String.valueOf(p.getUserId()).contains(searchText) ||
+        List<Problem> filteredUserProblems = allProblems.stream()
+                .filter(p -> p.getTitle().toLowerCase().contains(searchText) ||
+                        String.valueOf(p.getUserId()).contains(searchText) ||
                         p.getCategory().toLowerCase().contains(searchText))
                 .collect(Collectors.toList());
-        updatePostsList(filtered);
+
+        List<Problem> filteredAdminProblems = adminProblems.stream()
+                .filter(p -> p.getTitle().toLowerCase().contains(searchText) ||
+                        String.valueOf(p.getUserId()).contains(searchText) ||
+                        p.getCategory().toLowerCase().contains(searchText))
+                .collect(Collectors.toList());
+
+        updatePostsList(filteredUserProblems);
+        updateAdminPostsList(filteredAdminProblems);
     }
 
     public void refreshPostList() {
         loadProblems();
+        loadAdminProblems();
     }
 }

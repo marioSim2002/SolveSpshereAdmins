@@ -4,27 +4,52 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.chart.PieChart?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/19"
+<ScrollPane xmlns="http://javafx.com/javafx/19"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.solvesphereadmins.Controllers.ManageProblemsController"
-            prefHeight="500.0" prefWidth="700.0">
+            fitToWidth="true" fitToHeight="true"
+            prefHeight="700.0" prefWidth="700.0" fx:controller="com.example.solvesphereadmins.Controllers.ManageProblemsController">
 
-    <VBox spacing="10" alignment="CENTER" style="-fx-padding: 15px;" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
-          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
 
-        <!-- Title -->
-        <Label text="Manage Posts" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+    <AnchorPane minHeight="700" minWidth="700">
+        <VBox spacing="10" alignment="CENTER" style="-fx-padding: 15px;"
+              AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+              AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
 
-        <!-- Search Bar -->
-        <TextField fx:id="searchField" promptText="Search by title, category, user ID..." onKeyReleased="#handleSearch" maxWidth="600"/>
+            <!-- Title -->
+            <Label text="Manage Posts" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
 
-        <!-- List of Posts (Responsive) -->
-        <ListView fx:id="postsListView" prefHeight="300" prefWidth="680" VBox.vgrow="ALWAYS"/>
+            <!-- Search Bar -->
+            <TextField fx:id="searchField" promptText="Search by title, category, user ID..."
+                       onKeyReleased="#handleSearch" maxWidth="600"/>
 
-        <!-- Chart Section -->
-        <VBox spacing="10" alignment="CENTER" VBox.vgrow="ALWAYS">
-            <Label text="Post Categories Distribution" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-            <PieChart fx:id="categoryChart" prefHeight="250" VBox.vgrow="ALWAYS"/>
+            <!-- User Posts Section -->
+            <Label text="User Submitted Posts" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+            <ScrollPane fitToWidth="true" prefHeight="350">
+                <ListView fx:id="postsListView" prefHeight="380" prefWidth="680"/>
+            </ScrollPane>
+
+            <!-- Admin Problems Section -->
+            <Label text="Admin Submitted Problems" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+            <ScrollPane fitToWidth="true" prefHeight="350">
+                <ListView fx:id="adminPostsListView" prefHeight="380" prefWidth="680"/>
+            </ScrollPane>
+
+            <!-- Charts Section -->
+            <HBox spacing="20" alignment="CENTER" VBox.vgrow="ALWAYS">
+
+                <!-- User Post Categories Chart -->
+                <VBox spacing="10" alignment="CENTER">
+                    <Label text="User Post Categories Distribution" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <PieChart fx:id="categoryChart" prefHeight="250" prefWidth="300"/>
+                </VBox>
+
+                <!-- Admin Post Categories Chart -->
+                <VBox spacing="10" alignment="CENTER">
+                    <Label text="Admin Post Categories Distribution" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <PieChart fx:id="adminCategoryChart" prefHeight="250" prefWidth="300"/>
+                </VBox>
+
+            </HBox>
         </VBox>
-    </VBox>
-</AnchorPane>
+    </AnchorPane>
+</ScrollPane>

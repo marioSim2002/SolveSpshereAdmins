@@ -28,9 +28,6 @@ public class LoginController {
     private TextField visiblePasswordField;
     @FXML
     private CheckBox showPasswordCheckbox;
-
-
-    private final AdminDAO adminDAO = new AdminDAOImpl();
     private final Authenticator authenticator = new Authenticator(new PasswordHasher());
 
     public void handleLogin() {
@@ -62,7 +59,6 @@ public class LoginController {
             stage.setTitle("Admin Dashboard");
             stage.show();
 
-            // Close the login window (optional)
             ((Stage) usernameField.getScene().getWindow()).close();
         } catch (IOException e) {
             e.printStackTrace();
