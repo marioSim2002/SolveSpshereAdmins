@@ -19,7 +19,7 @@ public class AdminActionLogger {
      * If the admin provides a description, it logs the action.
      * the goal is to log the admins actions in the database as a history of actions
      */
-    public static boolean showPopUpWind(int adminId, String actionType, Long targetId, String targetType) {
+    public static boolean showPopUpWind(long adminId, String actionType, Long targetId, String targetType) {
         // Create the popup dialog
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Admin Action Description");
@@ -48,13 +48,13 @@ public class AdminActionLogger {
     /**
      * Logs the admin action in the database, separately with no popup
      */
-    public static void logAdminAction(int adminId, String actionType, Long targetId, String targetType, String description) {
+    public static void logAdminAction(long adminId, String actionType, Long targetId, String targetType, String description) {
         String query = "INSERT INTO admin_actions (admin_id, action_type, target_id, target_type, description) VALUES (?, ?, ?, ?, ?)";
         System.out.println("INSERTING...!");
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setInt(1, adminId);
+            stmt.setLong(1, adminId);
             stmt.setString(2, actionType);
             if (targetId != null) {
                 stmt.setLong(3, targetId);

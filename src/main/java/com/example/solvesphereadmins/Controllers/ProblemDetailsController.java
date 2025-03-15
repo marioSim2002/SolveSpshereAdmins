@@ -1,5 +1,7 @@
 package com.example.solvesphereadmins.Controllers;
 
+import com.example.solvesphereadmins.AdminUnit.AdminActionLogger;
+import com.example.solvesphereadmins.AdminUnit.SessionManager;
 import com.example.solvesphereadmins.Reports.ReportDAO;
 import com.example.solvesphereadmins.Reports.ReportDAOImpl;
 import com.example.solvesphereadmins.RetrievedUserData.*;
@@ -43,9 +45,9 @@ public class ProblemDetailsController {
         Platform.runLater(this::loadProblemReports);
     }
 
-    public void setProblem(Problem problem) {
+    public void setProblem(Problem problem ,ManageProblemsController parentController) {
         this.problem = problem;
-
+        this.parentController = parentController;
         titleLabel.setText(problem.getTitle());
         descriptionLabel.setText("Description: " + problem.getDescription());
         categoryLabel.setText("Category: " + problem.getCategory());
@@ -79,9 +81,11 @@ public class ProblemDetailsController {
 
     @FXML
     private void handleDelete() {
-        if (problem != null) {
+        long currentAdminID = SessionManager.getCurrentAdmin().getId();
+        if (AdminActionLogger.showPopUpWind(currentAdminID,"DELETE_PROBLEM", problem.getId(),"PROBLEM")) {
             ProblemDAO problemDAO = new ProblemDAOImpl();
-            problemDAO.deleteProblem(problem.getId());
+            problemDAO.deleteAdminProblem(problem.getId());
+            System.out.println("clicked");
             parentController.refreshPostList();
         }
     }

@@ -40,7 +40,7 @@ public class ManageProblemsController {
         updateCategoryChart(problems);
     }
 
-    private void loadAdminProblems() {
+    public void loadAdminProblems() {
         List<Problem> adminProbs = problemDAO.getAdminProblems();
         adminProblems.setAll(adminProbs);
         updateAdminPostsList(adminProbs);
@@ -89,9 +89,9 @@ public class ManageProblemsController {
 
         ObservableList<PieChart.Data> chartData = FXCollections.observableArrayList();
         categoryCount.forEach((category, count) -> chartData.add(new PieChart.Data(category, count)));
-
         categoryChart.setData(chartData);
     }
+
 
     private void updateAdminCategoryChart(List<Problem> adminProblems) {
         Map<String, Long> adminCategoryCount = adminProblems.stream()
@@ -100,7 +100,7 @@ public class ManageProblemsController {
         ObservableList<PieChart.Data> chartData = FXCollections.observableArrayList();
         adminCategoryCount.forEach((category, count) -> chartData.add(new PieChart.Data(category, count)));
 
-        adminCategoryChart.setData(chartData);
+      adminCategoryChart.setData(chartData);
     }
 
     @FXML

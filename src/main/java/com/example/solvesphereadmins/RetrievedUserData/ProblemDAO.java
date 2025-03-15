@@ -12,6 +12,8 @@ public interface ProblemDAO {
 
     void deleteProblem(long problemId);
 
+    void deleteAdminProblem(long problemId);
+
     Map<String, Long> getCategoryCountByUser(long userId);
 
     List<Problem> getAllProblems();

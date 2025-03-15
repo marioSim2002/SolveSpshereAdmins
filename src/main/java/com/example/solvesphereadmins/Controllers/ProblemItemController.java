@@ -2,6 +2,7 @@ package com.example.solvesphereadmins.Controllers;
 
 import com.example.solvesphereadmins.AdminUnit.Admin;
 import com.example.solvesphereadmins.AdminUnit.AdminActionLogger;
+import com.example.solvesphereadmins.AdminUnit.SessionManager;
 import com.example.solvesphereadmins.Reports.ReportDAO;
 import com.example.solvesphereadmins.Reports.ReportDAOImpl;
 import com.example.solvesphereadmins.RetrievedUserData.Problem;
@@ -49,11 +50,11 @@ public class ProblemItemController {
     @FXML
     private void handleDeleteProblem() {
         if (problem != null) {
-            //AdminActionLogger.showPopUpWind(currentAdminId, "DELETE_PROBLEM",problem.getId(), "PROBLEM");
-
-            problemDAO.deleteProblem(problem.getId());
-            showAlert("Problem Deleted", "The post has been removed.");
-            parentController.refreshPostList();
+           if(AdminActionLogger.showPopUpWind(SessionManager.getCurrentAdmin().getId(), "DELETE_PROBLEM",problem.getId(), "PROBLEM")) {
+               problemDAO.deleteProblem(problem.getId());
+               showAlert("Problem Deleted", "The post has been removed.");
+               parentController.refreshPostList();
+           }
         }
     }
 
@@ -64,7 +65,7 @@ public class ProblemItemController {
             AnchorPane pane = loader.load();
 
             ProblemDetailsController controller = loader.getController();
-            controller.setProblem(problem);
+            controller.setProblem(problem,parentController);
 
             Stage stage = new Stage();
             stage.setHeight(550);

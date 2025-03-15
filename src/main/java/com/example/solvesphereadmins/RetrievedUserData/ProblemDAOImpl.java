@@ -102,6 +102,21 @@ public class ProblemDAOImpl implements ProblemDAO {
         }
     }
 
+
+    @Override
+    public void deleteAdminProblem(long problemId) {
+        String query = "DELETE FROM admin_problems WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setLong(1, problemId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public Map<String, Long> getCategoryCountByUser(long userId) {
         String query = "SELECT category, COUNT(*) as count FROM problems WHERE user_id = ? GROUP BY category";
