@@ -42,7 +42,6 @@
                 <NumberAxis label="Users Joined"/>
             </yAxis>
         </LineChart>
-        <Button text="Export File" onAction="#exportFile"/>
         <!-- Close Button -->
         <Button text="Close" onAction="#handleClose"/>
     </VBox>
