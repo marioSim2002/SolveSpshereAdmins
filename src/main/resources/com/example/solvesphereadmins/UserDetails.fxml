@@ -25,6 +25,8 @@
         <Label fx:id="statusLabel" style="-fx-font-size: 14px;"/>
         <Label fx:id="countryLabel" style="-fx-font-size: 14px;"/>
         <Label fx:id="dobLabel" style="-fx-font-size: 14px;"/>
+        <Label fx:id="idLabel" style="-fx-font-size: 12px;"/>
+
 
         <!-- Section: Comments -->
         <Label text="User Comments" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
