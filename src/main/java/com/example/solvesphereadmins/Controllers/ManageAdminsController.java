@@ -103,7 +103,7 @@ public class ManageAdminsController {
     private void handleSuspendAdmin() {
         Admin selectedAdmin = adminTable.getSelectionModel().getSelectedItem();
         long selectedAdminId = (long) selectedAdmin.getId();
-
+        if(selectedAdminIsCurrnetUser(selectedAdminId)){return;}
         if ("SUSPENDED".equals(selectedAdmin.getStatus())) {
             showAlert("Already Suspended", "This admin is already suspended.");
             return;
@@ -122,6 +122,7 @@ public class ManageAdminsController {
     public void handleActivateAdmin() {
         Admin selectedAdmin = adminTable.getSelectionModel().getSelectedItem();
         long selectedAdminId = (long) selectedAdmin.getId();
+        if(selectedAdminIsCurrnetUser(selectedAdminId)){return;}//check if admin trying to perform act to himself
 
         if ("SUSPENDED".equals(selectedAdmin.getStatus())) {
             Optional<ButtonType> confirmation = showConfirmation("Re-Activate Admin", "Are you sure you want to Activate " + selectedAdmin.getUsername() + "?");
@@ -150,6 +151,10 @@ public class ManageAdminsController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         return alert.showAndWait();
+    }
+
+    private boolean selectedAdminIsCurrnetUser(long selecteAdminId){
+        return SessionManager.getCurrentAdmin().getId() == selecteAdminId;
     }
 
 }
