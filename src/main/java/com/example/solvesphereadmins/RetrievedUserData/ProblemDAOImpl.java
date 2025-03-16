@@ -63,7 +63,7 @@ public class ProblemDAOImpl implements ProblemDAO {
         List<Problem> problems = new ArrayList<>();
         String query = "SELECT * FROM problems WHERE user_id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = SolveShereDBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setLong(1, userId);
@@ -82,6 +82,8 @@ public class ProblemDAOImpl implements ProblemDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
         return problems;
     }
