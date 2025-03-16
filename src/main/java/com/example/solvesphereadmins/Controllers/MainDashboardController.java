@@ -20,7 +20,7 @@ import java.util.List;
 
 public class MainDashboardController {
     private Admin currentAdmin;
-
+    @FXML private StackPane viewActStat;
     @FXML private StackPane manageAdmins;
     @FXML private StackPane manageUsers;
     @FXML private StackPane managePosts;
@@ -31,7 +31,7 @@ public class MainDashboardController {
         public void init(Admin passedAdmin){
             System.out.println("SESSION MANAGER TEST:" + SessionManager.getCurrentAdmin().getId());
         this.currentAdmin = passedAdmin;
-        List<StackPane> cards = List.of(manageAdmins, manageUsers, managePosts, manageComments,manageLogs,addSols);
+        List<StackPane> cards = List.of(manageAdmins, manageUsers, managePosts, manageComments,manageLogs,addSols,viewActStat);
 
         // shadow effect
         DropShadow shadowEffect = new DropShadow();
@@ -161,6 +161,19 @@ public class MainDashboardController {
             stage.setScene(new Scene(root));
             stage.setTitle("Admin's Solutions");
             stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    public void handleOpenStat() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/solvesphereadmins/PlatformActivity.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Platform Activity");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

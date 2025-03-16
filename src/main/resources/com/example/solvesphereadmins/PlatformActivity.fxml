@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/19"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.solvesphereadmins.Controllers.PlatformActivityController"
+            prefHeight="600.0" prefWidth="800.0">
+
+    <VBox spacing="10" alignment="CENTER" style="-fx-padding: 15px;"
+          AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+
+        <!-- Title -->
+        <Label text="Platform Activity Overview"
+               style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+        <!-- Problems Chart -->
+        <Label text="Problems Posted Over Time" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+        <LineChart fx:id="problemsChart">
+            <xAxis>
+                <CategoryAxis label="Date"/>
+            </xAxis>
+            <yAxis>
+                <NumberAxis label="Problems Posted"/>
+            </yAxis>
+        </LineChart>
+
+        <!-- Users Chart -->
+        <Label text="Users Joined Over Time" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+        <LineChart fx:id="usersChart">
+            <xAxis>
+                <CategoryAxis label="Date"/>
+            </xAxis>
+            <yAxis>
+                <NumberAxis label="Users Joined"/>
+            </yAxis>
+        </LineChart>
+        <Button text="Export File" onAction="#exportFile"/>
+        <!-- Close Button -->
+        <Button text="Close" onAction="#handleClose"/>
+    </VBox>
+</AnchorPane>
