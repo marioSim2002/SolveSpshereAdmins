@@ -38,11 +38,7 @@ public class UserItemController {
         this.user = user;
         this.parentController = parentController;
 
-        if (admin != null) {
-            this.currentAdmin = admin;
-        } else {
-            System.err.println("⚠️ Error: currentAdmin is NULL in UserItemController");
-        }
+        if (admin != null) {this.currentAdmin = admin;}
 
         usernameLabel.setText(user.getUsername());
         emailLabel.setText(user.getEmail());

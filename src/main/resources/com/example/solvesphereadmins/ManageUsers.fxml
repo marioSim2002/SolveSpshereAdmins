@@ -25,6 +25,16 @@
                 </FXCollections>
             </items>
         </ComboBox>
+
+        <ComboBox fx:id="sortComboBox" onAction="#handleSort" prefWidth="150">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Default"/>
+                    <String fx:value="Newest First"/>
+                    <String fx:value="Oldest First"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
     </HBox>
 
     <!-- User List -->

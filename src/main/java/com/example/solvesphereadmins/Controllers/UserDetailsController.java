@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class UserDetailsController {
+    @FXML private Label dateJoinedLabel;
     @FXML private Label idLabel;
     @FXML private ImageView profileImage;
     @FXML private Label usernameLabel;
@@ -72,6 +73,7 @@ public class UserDetailsController {
         statusLabel.setText("Status: " + user.getStatus().toString());
         countryLabel.setText("Country: " + user.getCountry());
         dobLabel.setText("Date of Birth: " + user.getDateOfBirth());
+        dateJoinedLabel.setText("Date joined: "+user.getRegistrationDate());
         idLabel.setText("User ID: "+ user.getId());
 
         //convert profile picture BLOB to image

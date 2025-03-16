@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ManageUsersController {
-
+    @FXML private ComboBox<String> sortComboBox;
     @FXML private ComboBox<String> filterRoleComboBox;
     @FXML private ListView<HBox> userListView;
     @FXML private TextField searchField;
@@ -35,9 +35,15 @@ public class ManageUsersController {
 
     @FXML
     public void initialize() {
-        loadUserData();
+        loadUserData();  
         filterRoleComboBox.setItems(FXCollections.observableArrayList("All", "USER", "ACTIVE", "BANNED"));
         filterRoleComboBox.setValue("All");
+
+
+        sortComboBox.setItems(FXCollections.observableArrayList("Default", "Newest First", "Oldest First"));
+        sortComboBox.setValue("Default");
+
+        sortComboBox.setOnAction(event -> handleSort());
 
         //detect click events on list items
         userListView.setOnMouseClicked(event -> {
@@ -122,6 +128,21 @@ public class ManageUsersController {
     public void refreshUserList() {
         List<User> users = userDAO.getAllUsers();
         updateUserList(users);
+    }
+
+    @FXML
+    public void handleSort() {
+        String selectedSort = sortComboBox.getValue();
+        List<User> sortedUsers = allUsers.stream().sorted((u1, u2) -> {
+            if ("Newest First".equals(selectedSort)) {
+                return u2.getRegistrationDate().compareTo(u1.getRegistrationDate()); //descending
+            } else if ("Oldest First".equals(selectedSort)) {
+                return u1.getRegistrationDate().compareTo(u2.getRegistrationDate()); //ascending
+            }
+            return 0; //def
+        }).collect(Collectors.toList());
+
+        updateUserList(sortedUsers);
     }
 
 }

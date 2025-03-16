@@ -25,6 +25,7 @@
         <Label fx:id="statusLabel" style="-fx-font-size: 14px;"/>
         <Label fx:id="countryLabel" style="-fx-font-size: 14px;"/>
         <Label fx:id="dobLabel" style="-fx-font-size: 14px;"/>
+        <Label fx:id="dateJoinedLabel" style="-fx-font-size: 12px;"/>
         <Label fx:id="idLabel" style="-fx-font-size: 12px;"/>
 
 
