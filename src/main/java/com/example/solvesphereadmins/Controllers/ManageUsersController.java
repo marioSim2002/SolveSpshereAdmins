@@ -36,7 +36,7 @@ public class ManageUsersController {
     @FXML
     public void initialize() {
         loadUserData();  
-        filterRoleComboBox.setItems(FXCollections.observableArrayList("All", "USER", "ACTIVE", "BANNED"));
+        filterRoleComboBox.setItems(FXCollections.observableArrayList("All", "ACTIVE", "BANNED"));
         filterRoleComboBox.setValue("All");
 
 
