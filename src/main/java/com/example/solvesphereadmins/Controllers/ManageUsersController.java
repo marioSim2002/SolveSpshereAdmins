@@ -39,7 +39,6 @@ public class ManageUsersController {
         filterRoleComboBox.setItems(FXCollections.observableArrayList("All", "ACTIVE", "BANNED"));
         filterRoleComboBox.setValue("All");
 
-
         sortComboBox.setItems(FXCollections.observableArrayList("Default", "Newest First", "Oldest First"));
         sortComboBox.setValue("Default");
 

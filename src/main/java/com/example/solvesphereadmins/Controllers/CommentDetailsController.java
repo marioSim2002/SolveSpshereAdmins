@@ -35,9 +35,10 @@ public class CommentDetailsController {
     @FXML
     private void handleDelete() {
         if (comment != null) {
-            AdminActionLogger.showPopUpWind(SessionManager.getCurrentAdmin().getId(),"COMMENT_DELETION", comment.getId(),"COMMENT");
-            commentDAO.deleteComment(comment.getId());
-            closeWindow();
+            if(AdminActionLogger.showPopUpWind(SessionManager.getCurrentAdmin().getId(),"COMMENT_DELETION", comment.getId(),"COMMENT")) {
+                commentDAO.deleteComment(comment.getId());
+                closeWindow();
+            }
         }
     }
 
