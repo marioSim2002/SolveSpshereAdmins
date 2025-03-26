@@ -1,0 +1,621 @@
+@startuml
+class com.example.solvesphereadmins.AdminUnit.AdminActionDAOImpl {
++ void logAdminAction(int,String,Integer,String,String)
++ List<AdminAction> getAllAdminActions()
++ List<AdminAction> getActionsByAdminId(int)
++ void deleteAdminAction(int)
+}
+
+class com.example.solvesphereadmins.Controllers.CommentItemController {
+- Label contentLabel
+- Label ownerLabel
+- Label createdAtLabel
+- Comment comment
+- ManageCommentsController parentController
+- CommentDAO commentDAO
++ void setComment(Comment,ManageCommentsController)
+- void handleViewDetails()
++ void handleDelete()
+}
+
+
+class com.example.solvesphereadmins.RetrievedUserData.Comment {
+- long id
+- long userId
+- long problemId
+- String content
+- Timestamp createdAt
+- int upvotes
+- int downvotes
+- boolean isSolution
++ long getId()
++ long getUserId()
++ long getProblemId()
++ String getContent()
++ Timestamp getCreatedAt()
++ int getUpvotes()
++ int getDownvotes()
++ boolean isSolution()
++ void setId(long)
++ void setUserId(long)
++ void setProblemId(long)
++ void setContent(String)
++ void setCreatedAt(Timestamp)
++ void setUpvotes(int)
++ void setDownvotes(int)
++ void setSolution(boolean)
++ String toString()
+}
+
+
+class com.example.solvesphereadmins.RetrievedUserData.User {
+- long id
+- String username
+- String email
+- String password
+- Date dateOfBirth
+- String country
+- Date registrationDate
+- byte[] profilePicture
+- UserStatus status
++ long getId()
++ String getUsername()
++ String getEmail()
++ String getDateOfBirth()
++ String getCountry()
++ String getRegistrationDate()
++ byte[] getProfilePicture()
++ UserStatus getStatus()
++ void setStatus(UserStatus)
+}
+
+
+enum com.example.solvesphereadmins.RetrievedUserData.UserStatus {
++  ACTIVE
++  INACTIVE
++  BANNED
+}
+
+class com.example.solvesphereadmins.Controllers.UserItemController {
+- ImageView profileImage
+- Label usernameLabel
+- Label emailLabel
+- Label statusLabel
+- Button banButton
+- Button activateButton
+- Button deleteUserButton
+- ManageUsersController parentController
+- UserDAO userDAO
+- User user
+- Admin currentAdmin
++ void setUser(User,ManageUsersController,Admin)
+- void handleDeleteUser()
+- void handleBanUser()
+- void handleActivateUser()
+}
+
+
+class com.example.solvesphereadmins.RetrievedUserData.Problem {
+- long id
+- long userId
+- String title
+- String description
+- String category
+- Timestamp createdAt
+- boolean isAgeRestricted
++ long getId()
++ long getUserId()
++ String getTitle()
++ String getDescription()
++ String getCategory()
++ Timestamp getCreatedAt()
++ boolean isAgeRestricted()
++ void setId(long)
++ void setUserId(long)
++ void setTitle(String)
++ void setDescription(String)
++ void setCategory(String)
++ void setCreatedAt(Timestamp)
++ void setAgeRestricted(boolean)
++ String toString()
+}
+
+
+class com.example.solvesphereadmins.SecurityUnit.PasswordHasher {
+- BCryptPasswordEncoder passwordEncoder
++ String hashPassword(String)
++ boolean verifyPassword(String,String)
+}
+
+
+class com.example.solvesphereadmins.Controllers.ProblemDetailsController {
+- Label ownerId
+- Label titleLabel
+- Label descriptionLabel
+- Label categoryLabel
+- Label createdAtLabel
+- TableView<Report> reportsTable
+- TableColumn<Report,Long> reporterIdColumn
+- TableColumn<Report,String> reportReasonColumn
+- TableColumn<Report,String> reportCreatedAtColumn
+- ManageProblemsController parentController
+- ReportDAO reportDAO
+- Problem problem
+- Timeline refreshTimeline
+- void startAutoRefresh()
+- void refreshReportData()
++ void setProblem(Problem,ManageProblemsController)
+- void setupReportTable()
+- void loadProblemReports()
+- void handleClose()
+- void handleDelete()
+- void handleDeleteReport()
+}
+
+
+class com.example.solvesphereadmins.Controllers.AdminLogsController {
+- TableView<AdminAction> logsTable
+- TableColumn<AdminAction,Long> adminIdColumn
+- TableColumn<AdminAction,String> actionTypeColumn
+- TableColumn<AdminAction,Long> targetIdColumn
+- TableColumn<AdminAction,String> targetTypeColumn
+- TableColumn<AdminAction,String> descriptionColumn
+- TableColumn<AdminAction,String> timestampColumn
+- AdminActionDAO adminActionDAO
++ void initialize()
+- void setupTable()
+- void loadLogs()
+- void handleClose()
++ void handlePDFExportation()
+}
+
+
+class com.example.solvesphereadmins.AdminUnit.Admin {
+- int id
+- String username
+- String password
+- String email
+- Timestamp createdAt
+- String status
+- String role
++ int getId()
++ String getUsername()
++ String getPassword()
++ String getEmail()
++ String getStatus()
++ String getRole()
++ void setStatus(String)
++ void setId(int)
+}
+
+
+class com.example.solvesphereadmins.SecurityUnit.Authenticator {
+- AdminDAO adminDAO
+- PasswordHasher passwordHasher
++ Admin authenticate(String,String)
+}
+
+
+interface com.example.solvesphereadmins.RetrievedUserData.UserDAO {
+~ Long getUserIdByUsernameAndEmail(String,String)
+~ List<User> getAllUsers()
+~ void updateUserStatus(long,User.UserStatus)
+~ void deleteUser(long)
+}
+
+class com.example.solvesphereadmins.RetrievedUserData.ProblemDAOImpl {
+- {static} String INSERT_ADMIN_PROBLEM_SQL
++ boolean addAdminProblem(Problem)
++ List<Problem> getAdminProblems()
++ List<Problem> getProblemsByUserId(long)
++ void deleteProblem(long)
++ void deleteAdminProblem(long)
++ Map<String,Long> getCategoryCountByUser(long)
++ List<Problem> getAllProblems()
++ List<Problem> findSimilarProblemsByTitleAndDescription(String,String)
+}
+
+
+class com.example.solvesphereadmins.RetrievedUserData.Report {
+- long id
+- long problemId
+- long reporterId
+- String reportReason
+- Timestamp createdAt
++ long getId()
++ long getProblemId()
++ long getReporterId()
++ String getReportReason()
++ Timestamp getCreatedAt()
+}
+
+
+class com.example.solvesphereadmins.Controllers.AddAdminController {
+- TextField usernameField
+- PasswordField passwordField
+- TextField emailField
+- ComboBox<String> roleComboBox
+- AdminDAO adminDAO
++ void handleAddAdmin()
+- void showAlert(String,String)
+- Optional<ButtonType> showConfirmation(String,String)
+- void closeWindow()
+}
+
+
+class com.example.solvesphereadmins.Controllers.ProblemItemController {
+- Label reportsStat
+- Label titleLabel
+- Label categoryLabel
+- Label createdAtLabel
+- Button deleteButton
+- Problem problem
+- ManageProblemsController parentController
+- ProblemDAO problemDAO
+- ReportDAO reportDAO
++ void init()
++ void setProblem(Problem,ManageProblemsController)
+- void handleDeleteProblem()
+- void openProblemDetails()
+- void showAlert(String,String)
+}
+
+
+interface com.example.solvesphereadmins.RetrievedUserData.ProblemDAO {
+~ boolean addAdminProblem(Problem)
+~ List<Problem> getProblemsByUserId(long)
+~ void deleteProblem(long)
+~ void deleteAdminProblem(long)
+~ Map<String,Long> getCategoryCountByUser(long)
+~ List<Problem> getAllProblems()
+~ List<Problem> findSimilarProblemsByTitleAndDescription(String,String)
+~ List<Problem> getAdminProblems()
+}
+
+class com.example.solvesphereadmins.Controllers.ManageCommentsController {
+- ListView<HBox> commentsListView
+- TextField searchField
+- Label totalCommentsLabel
+- ComboBox<String> sortComboBox
+- CheckBox solutionFilterCheckBox
+- Admin currentAdmin
+- CommentDAO commentDAO
+- ObservableList<Comment> allComments
++ void initialize()
+- void loadComments()
+- void updateCommentList(List<Comment>)
+- void handleSearch()
++ void refreshCommentList()
+- void handleSort()
+- void handleFilterSolutions()
+- void updateCommentsList(List<Comment>)
+- void handleClose()
+}
+
+
+class com.example.solvesphereadmins.ServerUnit.AdminServer {
+- {static} int PORT
+- {static} int MAX_THREADS
++ {static} void main(String[])
+}
+
+
+class com.example.solvesphereadmins.Controllers.LoginController {
+- TextField usernameField
+- PasswordField passwordField
+- TextField visiblePasswordField
+- CheckBox showPasswordCheckbox
+- Authenticator authenticator
++ void handleLogin()
+- boolean adminIsSuspended(Admin)
+- void openDashboard(Admin)
++ void togglePasswordVisibility()
+}
+
+
+class com.example.solvesphereadmins.AdminUnit.AdminAction {
+- long id
+- long adminId
+- String actionType
+- long targetId
+- String targetType
+- String description
+- Timestamp timestamp
++ long getId()
++ long getAdminId()
++ String getActionType()
++ long getTargetId()
++ String getTargetType()
++ String getDescription()
++ Timestamp getTimestamp()
+}
+
+
+class com.example.solvesphereadmins.Controllers.AddProblemController {
+- TextField titleField
+- TextArea descriptionField
+- TextField categoryField
+- TextField tagsField
+- CheckBox ageRestrictionCheckbox
+- VBox similarProblemsListView
+- Admin currentAdmin
+- ProblemDAO adminProblemDAO
++ void initialize()
++ void setAdmin(Admin)
+- void searchSimilarProblems(String,String)
+- void submitProblem()
+- void clearFields()
+}
+
+
+class com.example.solvesphereadmins.ServerUnit.ClientHandler {
+- Socket clientSocket
++ void run()
+- boolean authenticateAdmin(String,String)
+}
+
+
+class com.example.solvesphereadmins.Controllers.ManageProblemsController {
+- TextField searchField
+- ListView<HBox> postsListView
+- ListView<HBox> adminPostsListView
+- PieChart categoryChart
+- PieChart adminCategoryChart
+- ProblemDAO problemDAO
+- ObservableList<Problem> allProblems
+- ObservableList<Problem> adminProblems
++ void initialize()
+- void loadProblems()
++ void loadAdminProblems()
+- void updatePostsList(List<Problem>)
+- void updateAdminPostsList(List<Problem>)
+- void updateCategoryChart(List<Problem>)
+- void updateAdminCategoryChart(List<Problem>)
+- void handleSearch()
++ void refreshPostList()
+}
+
+
+abstract class com.example.solvesphereadmins.AlertsUnit {
+- {static} void showAlert(Alert.AlertType,String,String,String)
+- {static} void showAlert(Alert.AlertType,String,String)
++ {static} void showInvalidDataAlert()
++ {static} void successAddAlert()
++ {static} void showSuspendedAdminAlert()
++ {static} void showSuccessRegistrationAlert()
++ {static} void showSuccessLogInAlert()
++ {static} void showErrorAlert(String)
++ {static} void userNotRegisteredAlert()
++ {static} void commentDeletedSuccessfullyAlert()
++ {static} void commentNotFoundAlert()
++ {static} void showAccessDeniedAlert()
++ {static} void successExAlert()
+}
+
+interface com.example.solvesphereadmins.AdminUnit.AdminActionDAO {
+~ void logAdminAction(int,String,Integer,String,String)
+~ List<AdminAction> getAllAdminActions()
+~ List<AdminAction> getActionsByAdminId(int)
+~ void deleteAdminAction(int)
+}
+
+class com.example.solvesphereadmins.AdminUnit.SessionManager {
+- {static} Admin currentAdmin
++ {static} Admin getCurrentAdmin()
++ {static} void setCurrentAdmin(Admin)
+}
+
+
+interface com.example.solvesphereadmins.RetrievedUserData.CommentDAO {
+~ List<Comment> getCommentsByUserId(long)
+~ void deleteComment(long)
+~ List<Comment> getAllComments()
+}
+
+class com.example.solvesphereadmins.FileExporter {
++ {static} void exportPdfFile()
+}
+
+class com.example.solvesphereadmins.RetrievedUserData.UserDAOImpl {
++ Long getUserIdByUsernameAndEmail(String,String)
++ List<User> getAllUsers()
++ void updateUserStatus(long,UserStatus)
++ void deleteUser(long)
+}
+
+class com.example.solvesphereadmins.Controllers.MainDashboardController {
+- Admin currentAdmin
+- StackPane viewActStat
+- StackPane manageAdmins
+- StackPane manageUsers
+- StackPane managePosts
+- StackPane manageComments
+- StackPane manageLogs
+- StackPane addSols
++ void init(Admin)
+- void applyHoverEffect(StackPane,DropShadow)
+- void removeHoverEffect(StackPane)
+- void handleManageAdmins()
+- void openManageAdminsPage()
++ void handleManageUsers()
++ void handleManagePosts()
++ void handleManageComments()
++ void handleManageLogs()
++ void handleAddProblem()
++ void handleOpenStat()
+}
+
+
+class com.example.solvesphereadmins.Controllers.ManageUsersController {
+- ComboBox<String> sortComboBox
+- ComboBox<String> filterRoleComboBox
+- ListView<HBox> userListView
+- TextField searchField
+- UserDAO userDAO
+- ObservableList<User> allUsers
+- Admin currentAdmin
++ void initialize()
++ void setAdmin(Admin)
+- void loadUserData()
+- void updateUserList(List<User>)
+- void openUserDetails(User)
++ void handleSearch()
++ void handleFilter()
++ void refreshUserList()
++ void handleSort()
+}
+
+
+class com.example.solvesphereadmins.Controllers.UserDetailsController {
+- Label dateJoinedLabel
+- Label idLabel
+- ImageView profileImage
+- Label usernameLabel
+- Label emailLabel
+- Label statusLabel
+- Label countryLabel
+- Label dobLabel
+- TableView<Comment> commentsTable
+- TableColumn<Comment,Long> commentIdColumn
+- TableColumn<Comment,String> commentContentColumn
+- TableColumn<Comment,String> commentCreatedAtColumn
+- TableView<Problem> problemsTable
+- TableColumn<Problem,Long> problemIdColumn
+- TableColumn<Problem,String> problemTitleColumn
+- TableColumn<Problem,String> problemCategoryColumn
+- TableColumn<Problem,String> problemCreatedAtColumn
+- PieChart categoryChart
+- CommentDAO commentDAO
+- ProblemDAO problemDAO
+- User user
+- Admin admin
+- Timeline refreshTimeline
+- void startAutoRefresh()
+- void refreshUserData()
++ void setUser(User)
+- void setupCommentTable()
+- void setupProblemTable()
+- void loadUserComments()
+- void loadUserProblems()
+- void loadCategoryChart()
+- void handleDeleteComment()
+- void handleDeleteProblem()
+- void handleClose()
++ void setAdmin(Admin)
+}
+
+
+class com.example.solvesphereadmins.Controllers.CommentDetailsController {
+- Label contentLabel
+- Label ownerLabel
+- Label createdAtLabel
+- Label upvotesLabel
+- Label downvotesLabel
+- Label isSolutionLabel
+- Button deleteButton
+- Comment comment
+- CommentDAO commentDAO
++ void setComment(Comment)
+- void handleDelete()
+- void handleClose()
+- void closeWindow()
+}
+
+
+class com.example.solvesphereadmins.Controllers.PlatformActivityController {
+- LineChart<String,Number> problemsChart
+- LineChart<String,Number> usersChart
+- ProblemDAO problemDAO
+- UserDAO userDAO
++ void initialize()
+- void loadProblemActivity()
+- void loadUserActivity()
+- Map<String,Long> countByDate(List<Timestamp>)
+- void handleClose()
+}
+
+
+interface com.example.solvesphereadmins.Reports.ReportDAO {
+~ List<Report> getReportsByProblemId(long)
+~ void deleteReport(long)
+}
+
+class com.example.solvesphereadmins.DatabaseConnection {
+- {static} String URL
+- {static} String USER
+- {static} String PASSWORD
++ {static} Connection getConnection()
+}
+
+
+class com.example.solvesphereadmins.SolveShereDBConnection {
+- {static} String URL
+- {static} String USER
+- {static} String PASSWORD
++ {static} Connection getConnection()
+}
+
+
+class com.example.solvesphereadmins.AdminUnit.AdminActionLogger {
++ {static} boolean showPopUpWind(long,String,Long,String)
++ {static} void logAdminAction(long,String,Long,String,String)
+}
+
+class com.example.solvesphereadmins.RetrievedUserData.CommentDAOImpl {
++ List<Comment> getCommentsByUserId(long)
++ List<Comment> getAllComments()
++ void deleteComment(long)
+}
+
+class com.example.solvesphereadmins.Reports.ReportDAOImpl {
++ List<Report> getReportsByProblemId(long)
++ void deleteReport(long)
+}
+
+class com.example.solvesphereadmins.ServerUnit.AdminClient {
+- {static} String SERVER_ADDRESS
+- {static} int PORT
++ {static} void main(String[])
+}
+
+
+class com.example.solvesphereadmins.HelloApplication {
++ void start(Stage)
++ {static} void main(String[])
+}
+
+class com.example.solvesphereadmins.Controllers.ManageAdminsController {
+- TableView<Admin> adminTable
+- TableColumn<Admin,Integer> idColumn
+- TableColumn<Admin,String> usernameColumn
+- TableColumn<Admin,String> emailColumn
+- TableColumn<Admin,String> statusColumn
+- TableColumn<Admin,String> roleColumn
+- Label superAdminCount
+- Label adminCount
+- ComboBox<String> filterRoleComboBox
+- AdminDAO adminDAO
+- ObservableList<Admin> allAdmins
++ void initialize()
+- void loadAdminData()
+- void updateAdminCounts()
+- void handleAddAdmin()
+- void handleFilter()
+- void handleSuspendAdmin()
++ void handleActivateAdmin()
+- void showAlert(String,String)
+- Optional<ButtonType> showConfirmation(String,String)
+- boolean selectedAdminIsCurrnetUser(long)
+}
+
+
+
+
+com.example.solvesphereadmins.AdminUnit.AdminActionDAO <|.. com.example.solvesphereadmins.AdminUnit.AdminActionDAOImpl
+com.example.solvesphereadmins.RetrievedUserData.ProblemDAO <|.. com.example.solvesphereadmins.RetrievedUserData.ProblemDAOImpl
+com.example.solvesphereadmins.ServerUnit.Runnable <|.. com.example.solvesphereadmins.ServerUnit.ClientHandler
+com.example.solvesphereadmins.RetrievedUserData.UserDAO <|.. com.example.solvesphereadmins.RetrievedUserData.UserDAOImpl
+com.example.solvesphereadmins.RetrievedUserData.CommentDAO <|.. com.example.solvesphereadmins.RetrievedUserData.CommentDAOImpl
+com.example.solvesphereadmins.Reports.ReportDAO <|.. com.example.solvesphereadmins.Reports.ReportDAOImpl
+javafx.application.Application <|-- com.example.solvesphereadmins.HelloApplication
+@enduml
