@@ -150,10 +150,11 @@ public class UserDetailsController {
     private void handleDeleteProblem() {
         Problem selectedProblem = problemsTable.getSelectionModel().getSelectedItem();
         if (selectedProblem != null) {
-            AdminActionLogger.showPopUpWind(admin.getId(), "DELETE_PROBLEM", selectedProblem.getId(), "PROBLEM");
-            problemDAO.deleteProblem(selectedProblem.getId());
-            loadUserProblems(); // refresh table
-            loadCategoryChart(); // refresh chart
+            if (AdminActionLogger.showPopUpWind(admin.getId(), "DELETE_PROBLEM", selectedProblem.getId(), "PROBLEM")) {
+                problemDAO.deleteProblem(selectedProblem.getId());
+                loadUserProblems(); // refresh table
+                loadCategoryChart(); // refresh chart
+            }
         }
     }
 
